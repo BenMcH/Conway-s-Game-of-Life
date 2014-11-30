@@ -1,4 +1,5 @@
 package com.tycoon177.conway;
+
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,13 +16,19 @@ public class ConwaysGame extends JPanel {
 	private static final long serialVersionUID = -7548436324523302187L;
 	private int[][] board;
 	@SuppressWarnings("serial")
-	private ArrayList<Integer> stayAlive = new ArrayList<Integer>(){{
-		add(2);
-		add(3);
-	}};
+	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
+		{
+			add(2);
+			add(3);
+		}
+	};
 	@SuppressWarnings("serial")
-	private ArrayList<Integer> comeAlive = new ArrayList<Integer>(){{add(3);}};
-	
+	private ArrayList<Integer> comeAlive = new ArrayList<Integer>() {
+		{
+			add(3);
+		}
+	};
+
 	public ConwaysGame() {
 		board = new int[10][10];
 		randomizeBoard();
@@ -48,10 +55,11 @@ public class ConwaysGame extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				int j = e.getY() / 8;
 				int i = e.getX() / 8;
-				if(i > board.length-1 || j > board[0].length - 1) return;
+				if (i > board.length - 1 || j > board[0].length - 1)
+					return;
 				board[i][j] = e.getButton() == MouseEvent.BUTTON1 ? 1 : 0;
 				repaint();
-		//		System.out.println(i + " " + j);
+				// System.out.println(i + " " + j);
 			}
 
 			@Override
@@ -66,17 +74,17 @@ public class ConwaysGame extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		//this.setBorder(new LineBorder(Color.BLACK));
+		// this.setBorder(new LineBorder(Color.BLACK));
 	}
 
 	public void randomizeBoard() {
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = new Random((long) Math.ceil(System.nanoTime() * Math.random())).nextInt(2);
+				board[i][j] = new Random().nextInt(2);
 			}
-		step();
 		//step();
-		//step();
+		// step();
+		// step();
 	}
 
 	public int getNeighbors(int i, int j) {
@@ -162,6 +170,12 @@ public class ConwaysGame extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		for (int i = 0; i < board.length * 8; i += 8) {
+			g.drawRect(0, i, board.length * 8, 0);
+		}
+		for (int i = 0; i < board[0].length * 8; i += 8) {
+			g.drawRect(i, 0, 0, board[0].length * 8);
+		}
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] > 0) {
@@ -180,22 +194,23 @@ public class ConwaysGame extends JPanel {
 			}
 		}
 	}
-	
-	public void setStayAlive(int... num){
+
+	public void setStayAlive(int... num) {
 		stayAlive.removeAll(stayAlive);
-		for(int num1 : num)
+		for (int num1 : num)
 			stayAlive.add(num1);
 	}
-	
-	public void setComeAlive(int... num){
+
+	public void setComeAlive(int... num) {
 		comeAlive.removeAll(comeAlive);
-		for(int num1 : num){
+		for (int num1 : num) {
 			comeAlive.add(num1);
 		}
 	}
 
 	/**
 	 * Parse numbers in a csv style string into the numbers themselves
+	 * 
 	 * @param stayAlive
 	 * @param comeAlive
 	 */
@@ -204,25 +219,29 @@ public class ConwaysGame extends JPanel {
 		String[] comeRules = comeAlive.split(",");
 		int[] stayNums = new int[rules.length];
 		int[] comeNums = new int[comeRules.length];
-		for(int i = 0; i < stayNums.length; i++){
-			try{
-				if(rules[i].trim().equals("")){
+		for (int i = 0; i < stayNums.length; i++) {
+			try {
+				if (rules[i].trim().equals("")) {
 					stayNums[i] = -1;
-				}else
-				stayNums[i] = Integer.parseInt(rules[i].trim());		
-			}catch(NumberFormatException e){
-				JOptionPane.showMessageDialog(null, "Error changing rules. Make sure to enter whole numbers separated by commas.");
+				} else
+					stayNums[i] = Integer.parseInt(rules[i].trim());
+			} catch (NumberFormatException e) {
+				JOptionPane
+						.showMessageDialog(null,
+								"Error changing rules. Make sure to enter whole numbers separated by commas.");
 				return;
 			}
 		}
-		for(int i = 0; i < comeNums.length; i++){
-			try{
-				if(comeRules[i].trim().equals(""))
+		for (int i = 0; i < comeNums.length; i++) {
+			try {
+				if (comeRules[i].trim().equals(""))
 					comeNums[i] = -1;
 				else
-				comeNums[i] = Integer.parseInt(comeRules[i]);		
-			}catch(NumberFormatException e){
-				JOptionPane.showMessageDialog(null, "Error changing rules. Make sure to enter whole numbers separated by commas.");
+					comeNums[i] = Integer.parseInt(comeRules[i]);
+			} catch (NumberFormatException e) {
+				JOptionPane
+						.showMessageDialog(null,
+								"Error changing rules. Make sure to enter whole numbers separated by commas.");
 				return;
 			}
 		}

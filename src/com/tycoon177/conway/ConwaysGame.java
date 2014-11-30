@@ -55,9 +55,18 @@ public class ConwaysGame extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				int j = e.getY() / 8;
 				int i = e.getX() / 8;
+				int[][] paintbrush = PaintBrushEditor.getPaintBrush();
+				for (int y = 0; y < 3; y++)
+					for (int x = 0; x < 3; x++) {
+						if (paintbrush[x][y] == 1) {
+							if (i + x - 1 >= 0 && i + x - 1 < board.length)
+								if (j + y - 1 >= 0 && j + y - 1 < board[0].length)
+									board[i + x - 1][j + y - 1] = 1;
+						}
+					}
 				if (i > board.length - 1 || j > board[0].length - 1)
 					return;
-				board[i][j] = e.getButton() == MouseEvent.BUTTON1 ? 1 : 0;
+//				board[i][j] = e.getButton() == MouseEvent.BUTTON1 ? 1 : 0;
 				repaint();
 				// System.out.println(i + " " + j);
 			}
@@ -83,7 +92,7 @@ public class ConwaysGame extends JPanel {
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Random().nextInt(2);
 			}
-		//step();
+		// step();
 		// step();
 		// step();
 	}

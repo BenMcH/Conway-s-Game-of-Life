@@ -1,11 +1,12 @@
 package com.tycoon177.conway;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -25,7 +26,7 @@ public class Controls extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JButton step = new JButton("      Step     ");
 		add(step);
-		setBackground(Color.LIGHT_GRAY);
+		//setBackground(Color.LIGHT_GRAY);
 		setOpaque(true);
 		// Make one step
 		step.addActionListener(new ActionListener() {
@@ -83,6 +84,11 @@ public class Controls extends JPanel {
 		RuleEditor rules = new RuleEditor(game);
 		add(rules);
 		this.add(speed);
+		PaintBrushEditor p = new PaintBrushEditor();
+		p.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		this.add(new JLabel("Paintbrush"));
+		this.add(p);
+	
 	}
 
 	@Override

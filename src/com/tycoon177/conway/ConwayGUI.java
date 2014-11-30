@@ -9,8 +9,8 @@ public class ConwayGUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -1233273878556674435L;
-	private ConwaysGame game;
 	public static ConwayGUI gui;
+	public static ConwaysGame game;
 	public ConwayGUI(ConwaysGame g) {
 		super();
 		setSize(920, 830);
@@ -21,10 +21,10 @@ public class ConwayGUI extends JFrame {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		this.game = g;
+		game = g;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		this.getContentPane().add(this.game, BorderLayout.CENTER);
+		this.getContentPane().add(game, BorderLayout.CENTER);
 		//Make the right panel
 		Controls controls = new Controls(game);
 		this.add(controls, BorderLayout.EAST);

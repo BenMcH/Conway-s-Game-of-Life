@@ -74,6 +74,7 @@ public class ConwaysGame extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+		this.setDoubleBuffered(true);
 		// this.setBorder(new LineBorder(Color.BLACK));
 	}
 

@@ -16,16 +16,18 @@ public class Controls extends JPanel {
 	 */
 	private static final long serialVersionUID = 4133961122395083677L;
 	ConwaysGame game;
-	
-	public Controls(ConwaysGame game){
+	Timer timer;
+	SpeedChanger speed;
+	public Controls(ConwaysGame game) {
 		super();
+		speed = new SpeedChanger(this);
 		this.game = game;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JButton step = new JButton("      Step     ");
 		add(step);
 		setBackground(Color.LIGHT_GRAY);
 		setOpaque(true);
-		//Make one step
+		// Make one step
 		step.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -34,8 +36,8 @@ public class Controls extends JPanel {
 				revalidate();
 			}
 		});
-		//Swing timer to automatically step
-		Timer t = new Timer(100, new ActionListener() {
+		// Swing timer to automatically step
+		timer = new Timer(1000/20, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.step();
@@ -44,17 +46,20 @@ public class Controls extends JPanel {
 			}
 		});
 		JButton run = new JButton("Toggle Run");
-		//Continuously Step
+		// Continuously Step
 		run.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (t.isRunning()){
-					t.stop();	
-					ConwayGUI.gui.setTitle("Conways Game of Life, made by tycoon177 - Stopped");
-				}
-				else{
-					t.start();
-					ConwayGUI.gui.setTitle("Conways Game of Life, made by tycoon177 - Running");
+				if (timer.isRunning()) {
+					timer.stop();
+					ConwayGUI.gui
+							.setTitle("Conways Game of Life, made by tycoon177 - Stopped");
+					speed.setDisabled(true);
+				} else {
+					timer.start();
+					ConwayGUI.gui
+							.setTitle("Conways Game of Life, made by tycoon177 - Running");
+					speed.setDisabled(false);
 				}
 			}
 		});
@@ -74,17 +79,24 @@ public class Controls extends JPanel {
 		});
 		add(clear);
 		add(random);
-		
+
 		RuleEditor rules = new RuleEditor(game);
 		add(rules);
+		this.add(speed);
 	}
-	
+
 	@Override
-	public void repaint(){
+	public void repaint() {
 		super.repaint();
-		if(game != null)
-		game.repaint();
-		
+		if (game != null)
+			game.repaint();
+
+	}
+
+	public void setMaxUpdates(int updates) {
+
+		timer.setDelay(1000/updates);
+	
 	}
 
 }

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -16,22 +17,20 @@ public class PaintBrushEditor extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -6571809177616025341L;
-	public static int[][] paintbrush = new int[3][3];
+	public static final int SIZE = 5;
+	public static int[][] paintbrush = new int[SIZE][SIZE];
 	public PaintBrushEditor(){
 		super();
 		setOpaque(true);
 	//	setBackground(Color.red);	
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		JToggleButton[][] buttons = new JToggleButton[3][3];
+		JCheckBox[][] buttons = new JCheckBox[SIZE][SIZE];
 		ActionListener action = new ActionListener(){
-
-
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(int i = 0; i < 3; i ++){
-					for(int j = 0; j < 3; j++){
+				for(int i = 0; i < SIZE; i ++){
+					for(int j = 0; j < SIZE; j++){
 						if(buttons[i][j].isSelected())
 							paintbrush[i][j] = 1;
 						else paintbrush[i][j] = 0;
@@ -40,32 +39,32 @@ public class PaintBrushEditor extends JPanel {
 				//System.out.print(paintbrush[1][1]);
 			}
 		};
-		for(int i = 0; i < 3; i++){
-			for(int j = 0; j < 3; j++){
+		for(int i = 0; i < SIZE; i++){
+			for(int j = 0; j < SIZE; j++){
 				c.fill = GridBagConstraints.HORIZONTAL;
 				c.gridx = i+1;
 				c.gridy = j+1;
 				c.weightx = .5;
-				//c.weighty = .5;
-				buttons[i][j] = new JToggleButton(" . ");
+				//c.weighty = .SIZE;
+				buttons[i][j] = new JCheckBox();
 				buttons[i][j].setAlignmentX(RIGHT_ALIGNMENT);
 				add(buttons[i][j],c);
 				buttons[i][j].addActionListener(action);
 			}
 			add(Box.createVerticalGlue());
 		}
-		buttons[1][1].setSelected(true);
+		buttons[(SIZE-1)/2][(SIZE-1)/2].setSelected(true);
 		action.actionPerformed(null);
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(100, 100);
+		return new Dimension(105, 100);
 	}
 
 	@Override
 	public Dimension getMaximumSize() {
-		return new Dimension(100, 100);
+		return new Dimension(120, 150);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.tycoon177.conway;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,6 +16,8 @@ public class ConwaysGame extends JPanel {
 	 */
 	private static final long serialVersionUID = -7548436324523302187L;
 	private int[][] board;
+	private int cellSize = 8;
+	
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
 		{
@@ -53,8 +56,8 @@ public class ConwaysGame extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int j = e.getY() / 8;
-				int i = e.getX() / 8;
+				int j = e.getY() / cellSize;
+				int i = e.getX() / cellSize;
 				int[][] paintbrush = PaintBrushEditor.getPaintBrush();
 				int halfPt = ((PaintBrushEditor.SIZE - 1) / 2);
 
@@ -187,20 +190,18 @@ public class ConwaysGame extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int i = 0; i < board.length * 8; i += 8) {
-			g.drawRect(0, i, board.length * 8, 0);
-		}
-		for (int i = 0; i < board[0].length * 8; i += 8) {
-			g.drawRect(i, 0, 0, board[0].length * 8);
+		for (int i = 0; i < board.length * cellSize; i += cellSize) {
+			g.drawRect(0, i, board.length * cellSize, 0);
+			g.drawRect(i, 0, 0, board.length * cellSize);
 		}
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] > 0) {
-					g.fillRect(8 * i, 8 * j, 8, 8);
+					g.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
 				}
 			}
 		}
-		g.drawRect(0, 0, 800, 800);
+		g.drawRect(0, 0, board.length * cellSize, board.length * cellSize);
 	}
 
 	public void clearBoard() {
@@ -264,5 +265,15 @@ public class ConwaysGame extends JPanel {
 		}
 		setStayAlive(stayNums);
 		setComeAlive(comeNums);
+	}
+	
+	public void changeCellSize(int size){
+		this.cellSize = size;
+		repaint();
+	}
+	
+	@Override
+	public Dimension getPreferredSize(){
+		return new Dimension(board.length*cellSize, board.length * cellSize);
 	}
 }

@@ -16,13 +16,11 @@ public class Controls extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 4133961122395083677L;
-	ConwaysGame game;
 	Timer timer;
 	SpeedChanger speed;
-	public Controls(ConwaysGame game) {
+	public Controls() {
 		super();
 		speed = new SpeedChanger(this);
-		this.game = game;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JButton step = new JButton("      Step     ");
 		add(step);
@@ -32,7 +30,7 @@ public class Controls extends JPanel {
 		step.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				game.step();
+				ConwayGUI.game.step();
 				repaint();
 				revalidate();
 			}
@@ -41,7 +39,7 @@ public class Controls extends JPanel {
 		timer = new Timer(1000/20, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				game.step();
+				ConwayGUI.game.step();
 				repaint();
 				revalidate();
 			}
@@ -69,19 +67,19 @@ public class Controls extends JPanel {
 		JButton random = new JButton("   Random   ");
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.clearBoard();
+				ConwayGUI.game.clearBoard();
 			}
 		});
 		random.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.randomizeBoard();
+				ConwayGUI.game.randomizeBoard();
 				repaint();
 			}
 		});
 		add(clear);
 		add(random);
 
-		RuleEditor rules = new RuleEditor(game);
+		RuleEditor rules = new RuleEditor();
 		add(rules);
 		this.add(speed);
 		PaintBrushEditor p = new PaintBrushEditor();
@@ -94,8 +92,8 @@ public class Controls extends JPanel {
 	@Override
 	public void repaint() {
 		super.repaint();
-		if (game != null)
-			game.repaint();
+		if (ConwayGUI.game != null)
+			ConwayGUI.game.repaint();
 
 	}
 

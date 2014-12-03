@@ -17,10 +17,8 @@ public class RuleEditor extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 8320309158451775180L;
-	private ConwaysGame game;
-	public RuleEditor(ConwaysGame game) {
+	public RuleEditor() {
 		super();
-		this.game = game;
 		init();
 	}
 	
@@ -44,7 +42,7 @@ public class RuleEditor extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				game.setRules(stayAlive.getText(), comeAlive.getText());
+				ConwayGUI.game.setRules(stayAlive.getText(), comeAlive.getText());
 			}
 		});
 	}

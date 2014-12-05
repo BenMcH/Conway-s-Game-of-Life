@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -84,7 +83,6 @@ public class Controls extends JPanel {
 		this.add(speed);
 		PaintBrushEditor p = new PaintBrushEditor();
 		p.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-		this.add(new JLabel("Paintbrush"));
 		this.add(p);
 	
 	}

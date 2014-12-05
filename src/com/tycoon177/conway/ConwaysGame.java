@@ -1,7 +1,10 @@
 package com.tycoon177.conway;
 
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -16,8 +19,7 @@ public class ConwaysGame extends JPanel {
 	 */
 	private static final long serialVersionUID = -7548436324523302187L;
 	private int[][] board;
-	private int cellSize = 8;
-	
+	private boolean showGrid = true;
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
 		{
@@ -56,8 +58,8 @@ public class ConwaysGame extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int j = e.getY() / cellSize;
-				int i = e.getX() / cellSize;
+				int j = e.getY() / Settings.CELL_SIZE;
+				int i = e.getX() / Settings.CELL_SIZE;
 				int[][] paintbrush = PaintBrushEditor.getPaintBrush();
 				int halfPt = ((PaintBrushEditor.SIZE - 1) / 2);
 
@@ -190,18 +192,31 @@ public class ConwaysGame extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int i = 0; i < board.length * cellSize; i += cellSize) {
-			g.drawRect(0, i, board.length * cellSize, 0);
-			g.drawRect(i, 0, 0, board.length * cellSize);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Settings.BACKGROUND_COLOR);
+		g2.fillRect(0, 0, this.getPreferredSize().width,
+				this.getPreferredSize().height);
+		g2.setColor(Settings.GRID_COLOR);
+		Stroke stroke = g2.getStroke();
+		g2.setStroke(new BasicStroke());
+		if (showGrid) {
+			g2.drawRect(0, 0, board.length * Settings.CELL_SIZE, board.length
+					* Settings.CELL_SIZE);
+			for (int i = 0; i < board.length * Settings.CELL_SIZE; i += Settings.CELL_SIZE) {
+				g2.drawRect(0, i, board.length * Settings.CELL_SIZE, 0);
+				g2.drawRect(i, 0, 0, board.length * Settings.CELL_SIZE);
+			}
 		}
+		g2.setStroke(stroke);
+		g2.setColor(Settings.CELL_COLOR);
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] > 0) {
-					g.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
+					g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE * j,
+							Settings.CELL_SIZE, Settings.CELL_SIZE);
 				}
 			}
 		}
-		g.drawRect(0, 0, board.length * cellSize, board.length * cellSize);
 	}
 
 	public void clearBoard() {
@@ -266,14 +281,15 @@ public class ConwaysGame extends JPanel {
 		setStayAlive(stayNums);
 		setComeAlive(comeNums);
 	}
-	
-	public void changeCellSize(int size){
-		this.cellSize = size;
+
+	public void changeCellSize(int size) {
+		Settings.CELL_SIZE = size;
 		repaint();
 	}
-	
+
 	@Override
-	public Dimension getPreferredSize(){
-		return new Dimension(board.length*cellSize, board.length * cellSize);
+	public Dimension getPreferredSize() {
+		return new Dimension(board.length * Settings.CELL_SIZE, board.length
+				* Settings.CELL_SIZE);
 	}
 }

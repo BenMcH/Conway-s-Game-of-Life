@@ -1,6 +1,5 @@
 package com.tycoon177.conway;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -8,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PaintBrushEditor extends JPanel {
@@ -38,6 +38,7 @@ public class PaintBrushEditor extends JPanel {
 				//System.out.print(paintbrush[1][1]);
 			}
 		};
+		add(new JLabel("PaintBrush:"));
 		for(int i = 0; i < SIZE; i++){
 			for(int j = 0; j < SIZE; j++){
 				c.fill = GridBagConstraints.HORIZONTAL;
@@ -56,21 +57,21 @@ public class PaintBrushEditor extends JPanel {
 		action.actionPerformed(null);
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(105, 100);
-	}
-
-	@Override
-	public Dimension getMaximumSize() {
-		return new Dimension(120, 150);
-	}
-
-	@Override
-	public Dimension getMinimumSize() {
-		return new Dimension(100, 100);
-	}
-	
+//	@Override
+//	public Dimension getPreferredSize() {
+//		return new Dimension(105, 100);
+//	}
+//
+//	@Override
+//	public Dimension getMaximumSize() {
+//		return new Dimension(120, 150);
+//	}
+//
+//	@Override
+//	public Dimension getMinimumSize() {
+//		return new Dimension(100, 100);
+//	}
+//	
 	public static int[][] getPaintBrush(){
 		return paintbrush;
 	}

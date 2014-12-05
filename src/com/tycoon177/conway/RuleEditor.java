@@ -1,5 +1,4 @@
 package com.tycoon177.conway;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -47,10 +46,10 @@ public class RuleEditor extends JPanel{
 		});
 	}
 
-	@Override 
-	public Dimension getMaximumSize(){
-		Dimension d = new Dimension(this.getParent().getWidth(), 110);
-		return d;
-	}
+//	@Override 
+//	public Dimension getMaximumSize(){
+//		Dimension d = new Dimension(this.getParent().getWidth(), 110);
+//		return d;
+//	}
 
 }

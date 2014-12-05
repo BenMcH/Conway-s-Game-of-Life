@@ -1,7 +1,6 @@
 package com.tycoon177.conway;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.text.NumberFormat;
 
 import javax.swing.BoxLayout;
@@ -55,10 +54,10 @@ public class SpeedChanger extends JPanel {
 		});
 	}
 
-	@Override
-	public Dimension getMaximumSize() {
-		return (new Dimension(200, 35));
-	}
+//	@Override
+//	public Dimension getMaximumSize() {
+//		return (new Dimension(200, 35));
+//	}
 
 	public void setDisabled(boolean b) {
 		number.setEditable(b);

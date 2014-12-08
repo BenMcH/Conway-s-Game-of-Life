@@ -1,4 +1,4 @@
-package com.tycoon177.conway;
+package com.tycoon177.conway.Listeners;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -12,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.tycoon177.conway.GUI.ConwayGUI;
+import com.tycoon177.conway.utils.ConwaysGame;
+import com.tycoon177.conway.utils.Settings;
 
 public class ConwayGUIActionListener implements ActionListener {
 	private JFrame frame;

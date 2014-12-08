@@ -1,4 +1,4 @@
-package com.tycoon177.conway;
+package com.tycoon177.conway.GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

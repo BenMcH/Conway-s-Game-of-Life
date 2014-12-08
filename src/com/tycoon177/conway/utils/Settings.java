@@ -1,4 +1,4 @@
-package com.tycoon177.conway;
+package com.tycoon177.conway.utils;
 
 import java.awt.Color;
 

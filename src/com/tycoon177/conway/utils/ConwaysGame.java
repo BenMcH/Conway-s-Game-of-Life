@@ -1,4 +1,4 @@
-package com.tycoon177.conway;
+package com.tycoon177.conway.utils;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
@@ -12,6 +12,8 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import com.tycoon177.conway.GUI.PaintBrushEditor;
 
 public class ConwaysGame extends JPanel {
 	/**

@@ -1,10 +1,12 @@
 package com.tycoon177.conway;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -52,6 +54,9 @@ public class ConwayGUI extends JFrame implements ActionListener {
 	public JMenuBar setupMenu(){
 		JMenuBar bar = new JMenuBar();
 		JMenu edit = new JMenu("Edit");
+		JMenu tools = new JMenu("Tools");
+		JMenu preferences = new JMenu("Preferences");
+		
 		bar.add(edit);
 		JMenuItem changeSize = new JMenuItem("Change Board Size");
 		changeSize.setActionCommand("ChangeSize");
@@ -61,6 +66,13 @@ public class ConwayGUI extends JFrame implements ActionListener {
 		changeCellSize.setActionCommand("ChangeCellSize");
 		changeCellSize.addActionListener(this);
 		edit.add(changeCellSize);
+		JMenuItem color = new JMenuItem("Change Cell Color");
+		color.setActionCommand("Color");
+		color.addActionListener(this);
+		
+		preferences.add(color);
+		edit.add(preferences);
+		bar.add(tools);
 		return bar;
 	}
 	
@@ -74,11 +86,11 @@ public class ConwayGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getActionCommand().equals("ChangeSize")){
-			JFrame frame = new JFrame("Change Grid Size");
-			JPanel pane = new JPanel();
+			final JFrame frame = new JFrame("");
+			final JPanel pane = new JPanel();
 			pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 			pane.add(new JLabel("Size of grid (No. of cells)"));
-			JTextField number = new JTextField();
+			final JTextField number = new JTextField();
 			number.setOpaque(true);
 			pane.add(number);
 			JButton set = new JButton("Apply");
@@ -104,14 +116,15 @@ public class ConwayGUI extends JFrame implements ActionListener {
 			frame.setContentPane(pane);
 			frame.pack();
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		}
 		if(event.getActionCommand().equals("ChangeCellSize")){
-			JFrame frame = new JFrame("Change Cell Size");
-			JPanel pane = new JPanel();
+			final JFrame frame = new JFrame("");
+			final JPanel pane = new JPanel();
 			pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 			pane.add(new JLabel("Size of cells"));
-			JTextField number = new JTextField();
+			final JTextField number = new JTextField();
 			number.setOpaque(true);
 			pane.add(number);
 			JButton set = new JButton("Apply");
@@ -137,9 +150,14 @@ public class ConwayGUI extends JFrame implements ActionListener {
 			frame.setContentPane(pane);
 			frame.pack();
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		}
-		
+		if(event.getActionCommand().equals("Color")){
+			Color c = JColorChooser.showDialog(null, "Choose a color", Settings.CELL_COLOR);
+			Settings.CELL_COLOR = c;
+			ConwayGUI.game.repaint();
+		}
 	}
 	
 	public void setNewBoard(ConwaysGame g){

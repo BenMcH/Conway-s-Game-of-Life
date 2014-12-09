@@ -1,4 +1,4 @@
-package com.tycoon177.conway.Listeners;
+package com.tycoon177.conway.listeners;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;

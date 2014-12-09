@@ -2,6 +2,13 @@ package com.tycoon177.conway.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -25,6 +32,72 @@ public class ConwayGUI extends JFrame {
 
 	public ConwayGUI(ConwaysGame g) {
 		super();
+		// Load settings
+		Settings settings = null;
+		try {
+			Settings.settingsFile.getParentFile().mkdirs();
+			Settings.settingsFile.createNewFile();
+			FileInputStream fis = new FileInputStream(Settings.settingsFile);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			settings = (Settings) ois.readObject();
+			ois.close();
+		} catch (Exception e) {
+
+		}
+
+		this.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Settings s = new Settings();
+				try {
+					FileOutputStream fos = new FileOutputStream(s.settingsFile);
+					ObjectOutputStream os = new ObjectOutputStream(fos);
+					os.writeObject(s);
+					os.flush();
+					os.close();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		ConwayGUI.controls = new Controls();
 		setSize(920, 830);
 		setTitle("Conways Game of Life, made by tycoon177 - Stopped");
@@ -48,7 +121,6 @@ public class ConwayGUI extends JFrame {
 		repaint();
 		revalidate();
 		gui = this;
-		Settings.loadSettings();
 	}
 
 	public static void main(String[] args) {

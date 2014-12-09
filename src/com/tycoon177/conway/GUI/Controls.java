@@ -14,7 +14,7 @@ import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import com.tycoon177.conway.Listeners.ControlsListener;
+import com.tycoon177.conway.listeners.ControlsListener;
 
 public class Controls extends JPanel {
 

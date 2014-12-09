@@ -4,7 +4,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.tycoon177.conway.Listeners.ConwayGUIActionListener;
+import com.tycoon177.conway.listeners.ConwayGUIActionListener;
 
 public class ConwayMenuBar extends JMenuBar {
 
@@ -16,7 +16,6 @@ public class ConwayMenuBar extends JMenuBar {
 	public ConwayMenuBar() {
 		super();
 		JMenu edit = new JMenu("Edit");
-		JMenu tools = new JMenu("Tools");
 		ConwayGUIActionListener actionListener = new ConwayGUIActionListener();
 		add(edit);
 		JMenuItem changeSize = new JMenuItem("Change Board Size");
@@ -31,7 +30,6 @@ public class ConwayMenuBar extends JMenuBar {
 		preferences.setActionCommand("pref");
 		preferences.addActionListener(actionListener);
 		edit.add(preferences);
-		//add(tools);
 	}
 
 }

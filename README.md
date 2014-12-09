@@ -11,6 +11,6 @@ The rule changer is the most helpful asset of this implementation of the Game of
 
 More features are planned for the near future such as custom colors based on the number of neighbors, the ability to save different rulesets, and possibly a brush editor. 
 
-![Blank Board]https://github.com/tycoon177/Conway-s-Game-of-Life/blob/master/blank.PNG)
+![Blank Board](https://github.com/tycoon177/Conway-s-Game-of-Life/blob/master/blank.PNG)
 ![Preferences](https://github.com/tycoon177/Conway-s-Game-of-Life/blob/master/pref-1.PNG)
 ![More Preferences](https://github.com/tycoon177/Conway-s-Game-of-Life/blob/master/pref-1.PNG)

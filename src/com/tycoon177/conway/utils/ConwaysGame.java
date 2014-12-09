@@ -69,7 +69,7 @@ public class ConwaysGame extends JPanel {
 					for (int x = 0; x < PaintBrushEditor.SIZE; x++) {
 						int x1 = i + x - halfPt;
 						int y1 = j + y - halfPt;
-						if (paintbrush[x][y] == 1) {
+						if (paintbrush[y][x] == 1) {
 							if (x1 >= 0 && x1 < board.length)
 								if (y1 >= 0 && y1 < board[0].length) {
 									board[x1][y1] = e.getButton() == MouseEvent.BUTTON1 ? 1
@@ -80,9 +80,7 @@ public class ConwaysGame extends JPanel {
 					}
 				if (i > board.length - 1 || j > board[0].length - 1)
 					return;
-				// board[i][j] = e.getButton() == MouseEvent.BUTTON1 ? 1 : 0;
 				repaint();
-				// System.out.println(i + " " + j);
 			}
 
 			@Override

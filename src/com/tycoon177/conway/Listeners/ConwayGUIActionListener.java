@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
+import com.tycoon177.conway.GUI.PreferencesWindow;
 import com.tycoon177.conway.utils.ConwaysGame;
 import com.tycoon177.conway.utils.Settings;
 
@@ -87,6 +88,10 @@ public class ConwayGUIActionListener implements ActionListener {
 			Color c = JColorChooser.showDialog(null, "Choose a color", Settings.CELL_COLOR);
 			Settings.CELL_COLOR = c;
 			ConwayGUI.game.repaint();
+			break;
+		case ("pref"):
+			PreferencesWindow win = new PreferencesWindow();
+			win.setVisible(true);
 			break;
 		}
 	}

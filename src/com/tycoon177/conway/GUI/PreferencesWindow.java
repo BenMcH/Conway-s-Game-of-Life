@@ -24,6 +24,7 @@ public class PreferencesWindow extends JFrame implements ListSelectionListener {
 	private JList<String> options;
 	private HashMap<String, JPanel> menus;
 	private JPanel currentPanel;
+
 	public PreferencesWindow() {
 		super();
 		setLayout(new BorderLayout(5, 5));
@@ -41,7 +42,7 @@ public class PreferencesWindow extends JFrame implements ListSelectionListener {
 	private void instantiateMenus() {
 		menus = new HashMap<String, JPanel>();
 		menus.put("Attributes", new AttributesPreferences());
-		
+
 		menus.put("Performance", new PerformancePanel());
 		menus.put("Colors", new ColorPanel());
 	}

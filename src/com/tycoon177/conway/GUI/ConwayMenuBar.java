@@ -17,7 +17,6 @@ public class ConwayMenuBar extends JMenuBar {
 		super();
 		JMenu edit = new JMenu("Edit");
 		JMenu tools = new JMenu("Tools");
-		JMenu preferences = new JMenu("Preferences");
 		ConwayGUIActionListener actionListener = new ConwayGUIActionListener();
 		add(edit);
 		JMenuItem changeSize = new JMenuItem("Change Board Size");
@@ -28,13 +27,11 @@ public class ConwayMenuBar extends JMenuBar {
 		changeCellSize.setActionCommand("ChangeCellSize");
 		changeCellSize.addActionListener(actionListener);
 		edit.add(changeCellSize);
-		JMenuItem color = new JMenuItem("Change Cell Color");
-		color.setActionCommand("Color");
-		color.addActionListener(actionListener);
-		
-		preferences.add(color);
+		JMenuItem preferences = new JMenuItem("Preferences");
+		preferences.setActionCommand("pref");
+		preferences.addActionListener(actionListener);
 		edit.add(preferences);
-		add(tools);
+		//add(tools);
 	}
 
 }

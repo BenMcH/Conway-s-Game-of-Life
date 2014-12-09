@@ -20,15 +20,16 @@ public class PerformancePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 2139493821612459073L;
 	JFormattedTextField number;
+
 	public PerformancePanel() {
 		super(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		NumberFormatter formatter = new NumberFormatter(
 				NumberFormat.getInstance());
 		formatter.setValueClass(Integer.class);
 		formatter.setMinimum(1);
-	//	formatter.setMaximum(144);
+		// formatter.setMaximum(144);
 		formatter.setCommitsOnValidEdit(true);
 		formatter.setAllowsInvalid(false);
 		number = new JFormattedTextField(formatter);
@@ -38,16 +39,16 @@ public class PerformancePanel extends JPanel {
 		c.weighty = .01;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.WEST;
-		add(new JLabel("Target FPS"),c);
+		add(new JLabel("Target FPS"), c);
 		c.gridy++;
-		add(number,c);
+		add(number, c);
 		c.gridx = 0;
 		c.gridy++;
 		c.ipadx = 0;
 		c.fill = GridBagConstraints.BOTH;
 		c.weighty = 1;
 		c.weightx = 1;
-		add(new JPanel(),c);
+		add(new JPanel(), c);
 		number.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
@@ -64,9 +65,8 @@ public class PerformancePanel extends JPanel {
 			public void removeUpdate(DocumentEvent arg0) {
 				Controls.listen.setMaxUpdates((Integer) number.getValue());
 			}
-		
+
 		});
 	}
-
 
 }

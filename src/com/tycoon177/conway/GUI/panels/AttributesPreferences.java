@@ -36,7 +36,7 @@ public class AttributesPreferences extends JPanel {
 				.setToolTipText("Enter numbers separated by commas that will bring the cells to life.");
 		JButton set = new JButton("     Set   ");
 		// pane.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		c.insets = new Insets(0,0,0,0);
+		c.insets = new Insets(0, 0, 0, 0);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.weightx = 1;
 		c.weighty = .001f;
@@ -61,11 +61,10 @@ public class AttributesPreferences extends JPanel {
 		c.gridx = 0;
 		add(set, c);
 
-		
-		//Fill the unneeded space with a JPanel
+		// Fill the unneeded space with a JPanel
 		c.weighty = 1;
 		c.gridy++;
-		add(new JPanel(),c);
+		add(new JPanel(), c);
 		set.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

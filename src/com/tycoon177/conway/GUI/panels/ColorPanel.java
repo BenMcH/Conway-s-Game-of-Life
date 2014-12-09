@@ -24,14 +24,15 @@ public class ColorPanel extends JPanel implements ActionListener {
 	SquareComp bg = new SquareComp(Settings.BACKGROUND_COLOR);
 	SquareComp cl = new SquareComp(Settings.CELL_COLOR);
 	SquareComp gr = new SquareComp(Settings.GRID_COLOR);
+
 	public ColorPanel() {
 		super(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		//JLabel label = new JLabel("Current Color:");
+		// JLabel label = new JLabel("Current Color:");
 		JButton backgroundButton = new JButton("Change Background Color");
 		backgroundButton.setActionCommand("bg");
 		backgroundButton.addActionListener(this);
-		
+
 		JButton cellButton = new JButton("Change Cell Color");
 		cellButton.setActionCommand("cell");
 		cellButton.addActionListener(this);
@@ -49,7 +50,7 @@ public class ColorPanel extends JPanel implements ActionListener {
 		c.insets = new Insets(5, 0, 0, 0);
 		add(backgroundButton, c);
 		c.gridx++;
-		add(bg,c);
+		add(bg, c);
 		c.gridy++;
 		c.gridx--;
 		add(cellButton, c);
@@ -84,7 +85,7 @@ public class ColorPanel extends JPanel implements ActionListener {
 		bg.changeColor(Settings.BACKGROUND_COLOR);
 		gr.changeColor(Settings.GRID_COLOR);
 		cl.changeColor(Settings.CELL_COLOR);
-		
+
 		ConwayGUI.game.repaint();
 	}
 
@@ -94,15 +95,15 @@ public class ColorPanel extends JPanel implements ActionListener {
 		 * 
 		 */
 		private static final long serialVersionUID = -2516940945966763697L;
-		
+
 		public SquareComp(Color c) {
 			super();
 			this.setOpaque(true);
 			this.setBackground(c);
 			this.setBorder(new LineBorder(Color.black));
 		}
-		
-		public void changeColor(Color c){
+
+		public void changeColor(Color c) {
 			this.setBackground(c);
 			repaint();
 		}

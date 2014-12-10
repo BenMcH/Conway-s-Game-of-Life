@@ -4,30 +4,41 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-
 public class Tools extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1366202218697271516L;
-	
-	@SuppressWarnings("unused")
+
 	private JRadioButton draw, select, paste;
-	
-	public Tools(){
+	public static final int DRAW = 0, SELECT = 1, PASTE = 2;
+
+	public Tools() {
 		super(new GridBagLayout());
+		draw = new JRadioButton("Draw");
+		select = new JRadioButton("Select");
+		paste = new JRadioButton("Paste");
 		setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Tools"));
 		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.NORTHWEST;
+		c.anchor = GridBagConstraints.NORTH;
+		draw.setSelected(true);
+		ButtonGroup group = new ButtonGroup();
+		group.add(draw);
+		group.add(select);
+		group.add(paste);
+		add(draw, c);
+		c.gridx++;
+		add(select, c);
+		c.gridx++;
+		add(paste, c);
 		
 	}
-	
-	
-	
+
 }

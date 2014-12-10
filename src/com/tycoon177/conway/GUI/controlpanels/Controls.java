@@ -1,18 +1,13 @@
 package com.tycoon177.conway.GUI.controlpanels;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.listeners.ControlsListener;
@@ -27,62 +22,41 @@ public class Controls extends JPanel {
 	protected int x;
 	protected int y;
 	public static ControlsListener listen;
+	public static StatsPanel stats;
+	public static Sliders slider;
 
 	public Controls() {
 		super();
+		slider = new Sliders();
+		stats = new StatsPanel();
 		listen = new ControlsListener(this);
 		setLayout(new GridBagLayout());
-		JPanel pane = new JPanel(new GridBagLayout());
+		JPanel boardControls = new BoardControls();
 		GridBagConstraints c = new GridBagConstraints();
-		JButton step = new JButton("Step");
-		// setBackground(Color.LIGHT_GRAY);
 		setOpaque(true);
-		// Make one step
-		step.setActionCommand("step");
-		step.addActionListener(listen);
-		JButton run = new JButton("Toggle Run");
-		run.setActionCommand("run");
-		// Continuously Step
-		run.addActionListener(listen);
-		JButton clear = new JButton("Clear");
-		clear.setActionCommand("clear");
-		JButton random = new JButton("Random");
-		random.setActionCommand("random");
-		clear.addActionListener(listen);
-		random.addActionListener(listen);
-
 		PaintBrushEditor p = new PaintBrushEditor();
-		// handleDrag(p);
-		p.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-
-		c.anchor = GridBagConstraints.NORTH;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = .01;
 		c.weighty = .01;
-
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		pane.add(step, c);
-		c.gridy = 2;
-		c.gridx = 0;
-		pane.add(run, c);
+		add(boardControls, c);
+		c.gridy = 1;
+		add(slider, c);
 		c.gridy = 0;
-		c.gridx = 1;
-		pane.add(clear, c);
-		c.gridy = 2;
-		c.gridx = 1;
-		pane.add(random, c);
-		c.gridx = 0;
-		pane.setBorder(new TitledBorder(new LineBorder(Color.black),
-				"Board Control"));
-		add(pane, c);
-		c.gridx++;
+		c.gridx = 2;
 		c.weightx = 0.01;
-		c.gridheight = 1;
+		c.gridheight = 2;
 		add(p, c);
-		c.weightx = 1;
+		c.gridx++;
+		add(new Tools(),c);
+	//	c.weightx = .01;
 		c.gridx++;
 		add(new JPanel(), c);
+		c.gridx++;
+		c.weightx = .01;
+		add(stats, c);
 	}
 
 	@Override

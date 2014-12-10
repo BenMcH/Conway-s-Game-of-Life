@@ -70,7 +70,7 @@ public class PaintBrushEditor extends JPanel {
 		add(p, c);
 		buttons[(SIZE - 1) / 2][(SIZE - 1) / 2].setSelected(true);
 		action.actionPerformed(null);
-		setBorder(new TitledBorder(new LineBorder(Color.black), "Paintbrush"));
+		setBorder(new TitledBorder(new LineBorder(Color.black), "Stamp"));
 	}
 
 	public static int[][] getPaintBrush() {

@@ -10,7 +10,7 @@ import com.tycoon177.conway.utils.Settings;
 
 public class ConwaysBoardMouseListeners implements MouseListener,
 		MouseMotionListener {
-	private boolean isClicked = false, inside = false, leftClick = false;
+	private boolean isClicked = false, leftClick = false;
 	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2), i, j;
 	private int[][] paintbrush;
 
@@ -27,15 +27,6 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if ((isClicked && inside)) {
-			if (e.getButton() == MouseEvent.BUTTON1)
-				addCell(e.getX() / Settings.CELL_SIZE, e.getY()
-						/ Settings.CELL_SIZE);
-			else
-				removeCell(e.getX() / Settings.CELL_SIZE, e.getY()
-						/ Settings.CELL_SIZE);
-		}
-		ConwayGUI.gui.repaint();
 	}
 
 	@Override
@@ -44,12 +35,10 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		inside = true;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		inside = false;
 	}
 
 	@Override
@@ -69,7 +58,6 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 	}
 
 	private void addCell(int x, int y) {
-
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
 				ConwayGUI.game.board[x][y] = 1;
@@ -96,5 +84,6 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 
 				}
 			}
+		ConwayGUI.game.updateStats();
 	}
 }

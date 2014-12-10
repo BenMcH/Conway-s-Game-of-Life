@@ -54,6 +54,7 @@ public class ConwayGUI extends JFrame {
 			e1.printStackTrace();
 		}
 		pane = new JScrollPane(g);
+		pane.getViewport().setAlignmentX(CENTER_ALIGNMENT);
 		setJMenuBar(new ConwayMenuBar());
 		game = g;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,7 +77,7 @@ public class ConwayGUI extends JFrame {
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		ConwaysGame game = new ConwaysGame(10,20);
+		ConwaysGame game = new ConwaysGame(100);
 		ConwayGUI gui = new ConwayGUI(game);
 		gui.setVisible(true);
 		// new PreferencesWindow().setVisible(true);;

@@ -9,12 +9,12 @@ import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 
 public class ControlsListener implements ActionListener {
-	Controls controls;
-	Timer timer;
-	
+	private Controls controls;
+	private Timer timer;
+
 	public ControlsListener(Controls c) {
 		this.controls = c;
-		timer = new Timer(1000/20, new ActionListener(){
+		timer = new Timer(1000 / 20, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConwayGUI.game.step();
@@ -23,13 +23,14 @@ public class ControlsListener implements ActionListener {
 			}
 		});
 	}
-	
+
 	@SuppressWarnings("unused")
-	private ControlsListener() {}
-	
+	private ControlsListener() {
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		switch(event.getActionCommand()){
+		switch (event.getActionCommand()) {
 		case "step":
 			ConwayGUI.game.step();
 			controls.repaint();
@@ -40,25 +41,28 @@ public class ControlsListener implements ActionListener {
 				timer.stop();
 				ConwayGUI.gui
 						.setTitle("Conways Game of Life, made by tycoon177 - Stopped");
+				Controls.slider.setFPSDisabled(true);
 			} else {
 				timer.start();
 				ConwayGUI.gui
 						.setTitle("Conways Game of Life, made by tycoon177 - Running");
+				Controls.slider.setFPSDisabled(false);
 			}
 			break;
 		case "clear":
 			ConwayGUI.game.clearBoard();
+			ConwayGUI.game.updateStats();
 			break;
 		case "random":
 			ConwayGUI.game.randomizeBoard();
 			ConwayGUI.game.repaint();
 		}
 	}
-	
+
 	public void setMaxUpdates(int updates) {
 
-		timer.setDelay(1000/updates);
-	
+		timer.setDelay(1000 / updates);
+
 	}
 
 }

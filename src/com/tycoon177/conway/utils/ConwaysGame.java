@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.listeners.ConwaysBoardMouseListeners;
 
 public class ConwaysGame extends JPanel {
@@ -20,6 +21,8 @@ public class ConwaysGame extends JPanel {
 	private static final long serialVersionUID = -7548436324523302187L;
 	public int[][] board;
 	private boolean showGrid = true;
+	private int generation = 0;
+
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
 		{
@@ -68,6 +71,9 @@ public class ConwaysGame extends JPanel {
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Random().nextInt(2);
 			}
+		generation = 0;
+		updateStats();
+		
 	}
 
 	public int getNeighbors(int i, int j) {
@@ -99,7 +105,7 @@ public class ConwaysGame extends JPanel {
 			}
 			if (board[i + 1][j] > 0)
 				neighbors++;
-		} else if (j + 1 < board.length) {
+		} else if (j + 1 < board[0].length) {
 			if (board[i][j + 1] > 0)
 				neighbors++;
 		}
@@ -112,7 +118,7 @@ public class ConwaysGame extends JPanel {
 			}
 		}
 		if (i - 1 >= 0) {
-			if (j + 1 < board.length) {
+			if (j + 1 < board[0].length) {
 				if (board[i - 1][j + 1] > 0)
 					neighbors++;
 			}
@@ -123,7 +129,6 @@ public class ConwaysGame extends JPanel {
 
 	public void step() {
 		int[][] newBoard = new int[board.length][board[0].length];
-
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				int neighbors = getNeighbors(i, j);
@@ -144,6 +149,8 @@ public class ConwaysGame extends JPanel {
 				board[i][j] = newBoard[i][j];
 			}
 		}
+		generation++;
+		updateStats();
 	}
 
 	public int[][] getBoard() {
@@ -166,7 +173,7 @@ public class ConwaysGame extends JPanel {
 			for (int i = 0; i < board.length * Settings.CELL_SIZE; i += Settings.CELL_SIZE) {
 				g2.drawRect(i, 0, 0, board[0].length * Settings.CELL_SIZE);
 			}
-			for(int i = 0; i < board[0].length * Settings.CELL_SIZE; i+= Settings.CELL_SIZE)
+			for (int i = 0; i < board[0].length * Settings.CELL_SIZE; i += Settings.CELL_SIZE)
 				g2.drawRect(0, i, board.length * Settings.CELL_SIZE, 0);
 
 		}
@@ -189,6 +196,8 @@ public class ConwaysGame extends JPanel {
 				repaint();
 			}
 		}
+		generation = 0;
+		updateStats();
 	}
 
 	public void setStayAlive(int... num) {
@@ -254,5 +263,25 @@ public class ConwaysGame extends JPanel {
 	public Dimension getPreferredSize() {
 		return new Dimension(board.length * Settings.CELL_SIZE, board[0].length
 				* Settings.CELL_SIZE);
+	}
+
+	public int getGeneraion() {
+		return generation;
+	}
+
+	public int getAlive() {
+		int alive = 0;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if (board[i][j] > 0)
+					alive++;
+			}
+		}
+		return alive;
+	}
+	
+	public void updateStats(){
+		Controls.stats.setGeneration(getGeneraion());
+		Controls.stats.setCellsAlive(getAlive());
 	}
 }

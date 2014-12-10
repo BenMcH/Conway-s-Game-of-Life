@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +23,8 @@ public class ConwaysGame extends JPanel {
 	public int[][] board;
 	private boolean showGrid = true;
 	private int generation = 0;
-
+	private Rectangle selectionRect;
+	
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
 		{
@@ -73,7 +75,7 @@ public class ConwaysGame extends JPanel {
 			}
 		generation = 0;
 		updateStats();
-		
+
 	}
 
 	public int getNeighbors(int i, int j) {
@@ -187,6 +189,10 @@ public class ConwaysGame extends JPanel {
 				}
 			}
 		}
+		if(selectionRect != null){
+			g2.draw(selectionRect);
+		}
+		
 	}
 
 	public void clearBoard() {
@@ -279,9 +285,17 @@ public class ConwaysGame extends JPanel {
 		}
 		return alive;
 	}
-	
-	public void updateStats(){
+
+	public void updateStats() {
 		Controls.stats.setGeneration(getGeneraion());
 		Controls.stats.setCellsAlive(getAlive());
+	}
+	
+	public void drawSelectionRect(Rectangle r){
+		selectionRect = r;
+	}
+	
+	public void stopDrawingSelection(){
+		selectionRect = null;
 	}
 }

@@ -42,7 +42,6 @@ public class PaintBrushEditor extends JPanel {
 				}
 			}
 		};
-		;
 
 		// JLabel label = new JLabel("PaintBrush:", SwingConstants.CENTER);
 		// add(label, c);

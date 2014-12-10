@@ -24,7 +24,8 @@ public class Controls extends JPanel {
 	public static ControlsListener listen;
 	public static StatsPanel stats;
 	public static Sliders slider;
-
+	public static Tools tools;
+	
 	public Controls() {
 		super();
 		slider = new Sliders();
@@ -50,7 +51,7 @@ public class Controls extends JPanel {
 		c.gridheight = 2;
 		add(p, c);
 		c.gridx++;
-		add(new Tools(),c);
+		add((tools = new Tools()),c);
 	//	c.weightx = .01;
 		c.gridx++;
 		add(new JPanel(), c);

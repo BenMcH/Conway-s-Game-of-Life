@@ -10,17 +10,17 @@ import com.tycoon177.conway.utils.Settings;
 
 public class ConwaysBoardMouseListeners implements MouseListener,
 		MouseMotionListener {
-	boolean isClicked = false, inside = false, leftClick = false;
+	private boolean isClicked = false, inside = false, leftClick = false;
+	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2), i, j;
+	private int[][] paintbrush;
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-
 		if ((isClicked)) {
-			if(leftClick)
-				addCell(e.getX() / Settings.CELL_SIZE, e.getY()
-						/ Settings.CELL_SIZE);
-			else
-				removeCell(e.getX()/Settings.CELL_SIZE, e.getY()/Settings.CELL_SIZE);
+			j = e.getY() / Settings.CELL_SIZE;
+			i = e.getX() / Settings.CELL_SIZE;
+			paintbrush = PaintBrushEditor.getPaintBrush();
+			changeCell(leftClick ? 1 : 0);
 		}
 		ConwayGUI.gui.repaint();
 	}
@@ -56,27 +56,10 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 	public void mousePressed(MouseEvent e) {
 		isClicked = true;
 		leftClick = e.getButton() == MouseEvent.BUTTON1;
-		int j = e.getY() / Settings.CELL_SIZE;
-		int i = e.getX() / Settings.CELL_SIZE;
-		int[][] paintbrush = PaintBrushEditor.getPaintBrush();
-		int halfPt = ((PaintBrushEditor.SIZE - 1) / 2);
-
-		for (int y = 0; y < PaintBrushEditor.SIZE; y++)
-			for (int x = 0; x < PaintBrushEditor.SIZE; x++) {
-				int x1 = i + x - halfPt;
-				int y1 = j + y - halfPt;
-				if (paintbrush[y][x] == 1) {
-
-					if (e.getButton() == MouseEvent.BUTTON1)
-						addCell(x1, y1);
-					else
-						removeCell(x1, y1);
-
-				}
-			}
-		if (i > ConwayGUI.game.board.length - 1
-				|| j > ConwayGUI.game.board[0].length - 1)
-			return;
+		j = e.getY() / Settings.CELL_SIZE;
+		i = e.getX() / Settings.CELL_SIZE;
+		paintbrush = PaintBrushEditor.getPaintBrush();
+		changeCell(leftClick ? 1 : 0);
 		ConwayGUI.gui.repaint();
 	}
 
@@ -86,6 +69,7 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 	}
 
 	private void addCell(int x, int y) {
+
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
 				ConwayGUI.game.board[x][y] = 1;
@@ -99,4 +83,18 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 			}
 	}
 
+	private void changeCell(int val) {
+		for (int y = 0; y < PaintBrushEditor.SIZE; y++)
+			for (int x = 0; x < PaintBrushEditor.SIZE; x++) {
+				int x1 = i + x - halfPt;
+				int y1 = j + y - halfPt;
+				if (paintbrush[y][x] == 1) {
+					if (leftClick)
+						addCell(x1, y1);
+					else
+						removeCell(x1, y1);
+
+				}
+			}
+	}
 }

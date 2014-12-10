@@ -28,9 +28,9 @@ public class ConwaysGameWindowListener implements WindowListener {
 			os.writeObject(s);
 			os.flush();
 			os.close();
-		} catch (Exception e1) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

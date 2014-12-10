@@ -76,7 +76,7 @@ public class ConwayGUI extends JFrame {
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		ConwaysGame game = new ConwaysGame(100);
+		ConwaysGame game = new ConwaysGame(10,20);
 		ConwayGUI gui = new ConwayGUI(game);
 		gui.setVisible(true);
 		// new PreferencesWindow().setVisible(true);;

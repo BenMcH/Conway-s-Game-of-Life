@@ -12,7 +12,8 @@ public class Settings implements Externalizable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8129820139187690240L;
-	public static int GRID_SIZE = 100;
+	public static int GRID_HEIGHT = 100;
+	public static int GRID_WIDTH = 100;	
 	public static int CELL_SIZE = 8;
 	public static Color BACKGROUND_COLOR = Color.WHITE;
 	public static Color GRID_COLOR = Color.LIGHT_GRAY;
@@ -23,7 +24,8 @@ public class Settings implements Externalizable {
 	@Override
 	public void readExternal(ObjectInput out) throws IOException,
 			ClassNotFoundException {
-		GRID_SIZE = out.readInt();
+		GRID_HEIGHT = out.readInt();
+		GRID_WIDTH = out.readInt();
 		CELL_SIZE = out.readInt();
 		BACKGROUND_COLOR = (Color)out.readObject();
 		GRID_COLOR = (Color)out.readObject();
@@ -32,7 +34,8 @@ public class Settings implements Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeInt(GRID_SIZE);
+		out.writeInt(GRID_HEIGHT);
+		out.writeInt(GRID_WIDTH);		
 		out.writeInt(CELL_SIZE);
 		out.writeObject(BACKGROUND_COLOR);
 		out.writeObject(GRID_COLOR);

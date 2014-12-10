@@ -50,6 +50,11 @@ public class ConwaysGame extends JPanel {
 		init();
 	}
 
+	public ConwaysGame(int width, int height) {
+		board = new int[width][height];
+		init();
+	}
+
 	public void init() {
 		ConwaysBoardMouseListeners listen = new ConwaysBoardMouseListeners();
 		this.addMouseListener(listen);
@@ -63,9 +68,6 @@ public class ConwaysGame extends JPanel {
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Random().nextInt(2);
 			}
-		// step();
-		// step();
-		// step();
 	}
 
 	public int getNeighbors(int i, int j) {
@@ -159,12 +161,14 @@ public class ConwaysGame extends JPanel {
 		Stroke stroke = g2.getStroke();
 		g2.setStroke(new BasicStroke());
 		if (showGrid) {
-			g2.drawRect(0, 0, board.length * Settings.CELL_SIZE, board.length
-					* Settings.CELL_SIZE);
+			g2.drawRect(0, 0, board.length * Settings.CELL_SIZE,
+					board[0].length * Settings.CELL_SIZE);
 			for (int i = 0; i < board.length * Settings.CELL_SIZE; i += Settings.CELL_SIZE) {
-				g2.drawRect(0, i, board.length * Settings.CELL_SIZE, 0);
-				g2.drawRect(i, 0, 0, board.length * Settings.CELL_SIZE);
+				g2.drawRect(i, 0, 0, board[0].length * Settings.CELL_SIZE);
 			}
+			for(int i = 0; i < board[0].length * Settings.CELL_SIZE; i+= Settings.CELL_SIZE)
+				g2.drawRect(0, i, board.length * Settings.CELL_SIZE, 0);
+
 		}
 		g2.setStroke(stroke);
 		g2.setColor(Settings.CELL_COLOR);
@@ -248,7 +252,7 @@ public class ConwaysGame extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(board.length * Settings.CELL_SIZE, board.length
+		return new Dimension(board.length * Settings.CELL_SIZE, board[0].length
 				* Settings.CELL_SIZE);
 	}
 }

@@ -26,10 +26,15 @@ public class ConwayGUIActionListener implements ActionListener {
 	private JButton cancel;
 	
 	public ConwayGUIActionListener() {
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent event) {
 		frame = new JFrame("");
+		JLabel label = new JLabel("Size of grid (No. of cells");
 		pane = new JPanel();
+		pane.add(label);
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		pane.add(new JLabel("Size of grid (No. of cells)"));
 		number = new JTextField();
 		number.setOpaque(true);
 		pane.add(number);
@@ -41,10 +46,6 @@ public class ConwayGUIActionListener implements ActionListener {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent event) {
 		switch(event.getActionCommand()){
 		case ("ChangeSize"):
 			set.addActionListener(new ActionListener(){
@@ -66,6 +67,7 @@ public class ConwayGUIActionListener implements ActionListener {
 			frame.setVisible(true);
 			break;
 		case ("ChangeCellSize"):
+			label.setText("Size of cells (in pixels)");
 			set.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					try{

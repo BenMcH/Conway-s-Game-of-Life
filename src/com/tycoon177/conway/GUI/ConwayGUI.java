@@ -2,13 +2,8 @@ package com.tycoon177.conway.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -17,6 +12,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.tycoon177.conway.GUI.controlpanels.Controls;
+import com.tycoon177.conway.listeners.ConwaysGameWindowListener;
 import com.tycoon177.conway.utils.ConwaysGame;
 import com.tycoon177.conway.utils.Settings;
 
@@ -33,6 +30,7 @@ public class ConwayGUI extends JFrame {
 	public ConwayGUI(ConwaysGame g) {
 		super();
 		// Load settings
+		@SuppressWarnings("unused")
 		Settings settings = null;
 		try {
 			Settings.settingsFile.getParentFile().mkdirs();
@@ -45,59 +43,7 @@ public class ConwayGUI extends JFrame {
 
 		}
 
-		this.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				Settings s = new Settings();
-				try {
-					FileOutputStream fos = new FileOutputStream(s.settingsFile);
-					ObjectOutputStream os = new ObjectOutputStream(fos);
-					os.writeObject(s);
-					os.flush();
-					os.close();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		this.addWindowListener(new ConwaysGameWindowListener());
 		ConwayGUI.controls = new Controls();
 		setSize(920, 830);
 		setTitle("Conways Game of Life, made by tycoon177 - Stopped");

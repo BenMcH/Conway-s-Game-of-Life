@@ -1,4 +1,4 @@
-package com.tycoon177.conway.GUI;
+package com.tycoon177.conway.GUI.controlpanels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

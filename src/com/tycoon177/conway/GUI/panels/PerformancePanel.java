@@ -11,7 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 
-import com.tycoon177.conway.GUI.Controls;
+import com.tycoon177.conway.GUI.controlpanels.Controls;
 
 public class PerformancePanel extends JPanel {
 

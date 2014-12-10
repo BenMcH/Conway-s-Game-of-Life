@@ -1,4 +1,4 @@
-package com.tycoon177.conway.GUI;
+package com.tycoon177.conway.GUI.controlpanels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -14,6 +14,7 @@ import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.listeners.ControlsListener;
 
 public class Controls extends JPanel {

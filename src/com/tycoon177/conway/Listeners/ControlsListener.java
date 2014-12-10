@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import com.tycoon177.conway.GUI.Controls;
 import com.tycoon177.conway.GUI.ConwayGUI;
+import com.tycoon177.conway.GUI.controlpanels.Controls;
 
 public class ControlsListener implements ActionListener {
 	Controls controls;

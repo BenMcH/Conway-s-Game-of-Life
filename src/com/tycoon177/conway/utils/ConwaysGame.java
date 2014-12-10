@@ -5,22 +5,20 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.tycoon177.conway.GUI.PaintBrushEditor;
+import com.tycoon177.conway.listeners.ConwaysBoardMouseListeners;
 
 public class ConwaysGame extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7548436324523302187L;
-	private int[][] board;
+	public int[][] board;
 	private boolean showGrid = true;
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
@@ -53,48 +51,9 @@ public class ConwaysGame extends JPanel {
 	}
 
 	public void init() {
-		this.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int j = e.getY() / Settings.CELL_SIZE;
-				int i = e.getX() / Settings.CELL_SIZE;
-				int[][] paintbrush = PaintBrushEditor.getPaintBrush();
-				int halfPt = ((PaintBrushEditor.SIZE - 1) / 2);
-
-				for (int y = 0; y < PaintBrushEditor.SIZE; y++)
-					for (int x = 0; x < PaintBrushEditor.SIZE; x++) {
-						int x1 = i + x - halfPt;
-						int y1 = j + y - halfPt;
-						if (paintbrush[y][x] == 1) {
-							if (x1 >= 0 && x1 < board.length)
-								if (y1 >= 0 && y1 < board[0].length) {
-									board[x1][y1] = e.getButton() == MouseEvent.BUTTON1 ? 1
-											: 0;
-
-								}
-						}
-					}
-				if (i > board.length - 1 || j > board[0].length - 1)
-					return;
-				repaint();
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
+		ConwaysBoardMouseListeners listen = new ConwaysBoardMouseListeners();
+		this.addMouseListener(listen);
+		this.addMouseMotionListener(listen);
 		this.setDoubleBuffered(true);
 		// this.setBorder(new LineBorder(Color.BLACK));
 	}

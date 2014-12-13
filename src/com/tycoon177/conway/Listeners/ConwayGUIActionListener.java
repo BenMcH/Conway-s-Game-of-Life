@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
+import com.tycoon177.conway.GUI.GridSizeChanger;
 import com.tycoon177.conway.GUI.PreferencesWindow;
-import com.tycoon177.conway.utils.ConwaysGame;
 import com.tycoon177.conway.utils.Settings;
 
 public class ConwayGUIActionListener implements ActionListener {
@@ -48,23 +48,7 @@ public class ConwayGUIActionListener implements ActionListener {
 		frame.setLocationRelativeTo(null);
 		switch(event.getActionCommand()){
 		case ("ChangeSize"):
-			set.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					try{
-						ConwayGUI.gui.setNewBoard(new ConwaysGame(Integer.parseInt(number.getText())));
-					}catch(Exception e1){
-						JOptionPane.showMessageDialog(null, "Please enter a whole number!");
-						return;
-					}
-						frame.dispose();
-				}
-			});
-			cancel.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					frame.dispose();
-				}
-			});
-			frame.setVisible(true);
+			GridSizeChanger.showGridSizeChanger();
 			break;
 		case ("ChangeCellSize"):
 			label.setText("Size of cells (in pixels)");

@@ -185,7 +185,6 @@ public class ConwaysGame extends JPanel {
 		g2.setColor(Settings.CELL_COLOR);
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				g2.setColor(Settings.CELL_COLOR);
 				if (selectionRect != null) {
 					Point p = new Point(i * Settings.CELL_SIZE,j * Settings.CELL_SIZE);
 					if(selectionRect.contains(p))
@@ -195,12 +194,10 @@ public class ConwaysGame extends JPanel {
 					g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE * j,
 							Settings.CELL_SIZE, Settings.CELL_SIZE);
 				}
+				g2.setColor(Settings.CELL_COLOR);
 			}
 		}
 		if (selectionRect != null) {
-			// g2.drawRect(selectionRect.x * Settings.CELL_SIZE, selectionRect.y
-			// * Settings.CELL_SIZE, selectionRect.width * Settings.CELL_SIZE,
-			// selectionRect.height * Settings.CELL_SIZE);
 			g2.draw(selectionRect);
 		}
 

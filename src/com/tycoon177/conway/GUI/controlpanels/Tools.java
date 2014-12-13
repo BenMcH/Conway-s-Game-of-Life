@@ -1,8 +1,7 @@
 package com.tycoon177.conway.GUI.controlpanels;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -24,7 +23,7 @@ public class Tools extends JPanel {
 	ButtonGroup group;
 	
 	public Tools() {
-		super(new GridBagLayout());
+		super(new GridLayout(3,1));
 		group = new ButtonGroup();
 		draw = new JRadioButton("Draw");
 		draw.setActionCommand("draw");
@@ -33,17 +32,13 @@ public class Tools extends JPanel {
 		paste = new JRadioButton("Paste");
 		paste.setActionCommand("paste");
 		setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Tools"));
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.NORTH;
 		draw.setSelected(true);
 		group.add(draw);
 		group.add(select);
 		group.add(paste);
-		add(draw, c);
-		c.gridx++;
-		add(select, c);
-		c.gridx++;
-		add(paste, c);
+		add(draw);
+		add(select);
+		add(paste);
 	}
 	
 	public String getTool(){

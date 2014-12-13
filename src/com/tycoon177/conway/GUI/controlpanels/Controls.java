@@ -35,9 +35,10 @@ public class Controls extends JPanel {
 		JPanel boardControls = new BoardControls();
 		GridBagConstraints c = new GridBagConstraints();
 		setOpaque(true);
-		PaintBrushEditor p = new PaintBrushEditor();
+		//PaintBrushEditor p = new PaintBrushEditor();
 		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
+//		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = .01;
 		c.weighty = .01;
 		c.gridx = 0;
@@ -49,9 +50,10 @@ public class Controls extends JPanel {
 		c.gridx = 2;
 		c.weightx = 0.01;
 		c.gridheight = 2;
-		add(p, c);
+	//	add(p, c);
 		c.gridx++;
 		add((tools = new Tools()),c);
+		c.fill = GridBagConstraints.HORIZONTAL;
 	//	c.weightx = .01;
 		c.gridx++;
 		add(new JPanel(), c);

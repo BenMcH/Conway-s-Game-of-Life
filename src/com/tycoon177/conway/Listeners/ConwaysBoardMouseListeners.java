@@ -16,13 +16,14 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 	private boolean leftClick = false, inside = false;
 	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2), i, j;
 	private int[][] paintbrush;
-	private Point point;
+	private Point point, cell;
 	private int[][] stamp;
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		j = e.getY() / Settings.CELL_SIZE;
 		i = e.getX() / Settings.CELL_SIZE;
+		cell = getCell(e.getPoint());
 		paintbrush = PaintBrushEditor.getPaintBrush();
 		changeCell(leftClick ? 1 : 0);
 		if (Controls.tools.getTool().equals("select"))
@@ -63,6 +64,7 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 		leftClick = e.getButton() == MouseEvent.BUTTON1;
 		j = e.getY() / Settings.CELL_SIZE;
 		i = e.getX() / Settings.CELL_SIZE;
+		cell = getCell(e.getPoint());
 		paintbrush = PaintBrushEditor.getPaintBrush();
 		changeCell(leftClick ? 1 : 0);
 		ConwayGUI.gui.repaint();
@@ -142,14 +144,22 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 		} else if (tool.equals("paste")) {
 			if (stamp == null)
 				return;
-			int halfw = stamp.length % 2 == 0 ? stamp.length / 2
-					: (stamp.length - 1) / 2;
-			int halfh = stamp[0].length % 2 == 0 ? stamp[0].length / 2
-					: (stamp[0].length - 1) / 2;
+			int halfw = 0, halfh = 0;
+			//System.out.println(stamp.length + " " + stamp[0].length);
+			if (stamp.length > 1 && stamp[0].length > 1) {
+				if (stamp.length > 1)
+					halfw = stamp.length % 2 == 0 ? stamp.length / 2
+							: (stamp.length + 1) / 2;
+
+				if (stamp[0].length > 1)
+					halfh = stamp[0].length % 2 == 0 ? stamp[0].length / 2
+							: (stamp[0].length + 1) / 2;
+			}
+			//System.out.println(halfw + " " + halfh);
 			for (int y = 0; y < stamp.length; y++) {
 				for (int x = 0; x < stamp[0].length; x++) {
-					int x1 = i + x - halfw;
-					int y1 = j + y - halfh;
+					int x1 = (int) (cell.getX() + x - halfw);
+					int y1 = (int) (cell.getY() + y - halfh);
 					if (stamp[y][x] == 1) {
 						addCell(x1, y1);
 					}
@@ -159,20 +169,20 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 		ConwayGUI.game.updateStats();
 	}
 
-	public Point getPointOnScreen(MouseEvent e) {
+	private Point getPointOnScreen(MouseEvent e) {
 		int x = (int) (Math.round((double) e.getPoint().getX()
 				/ Settings.CELL_SIZE));
 		int y = (int) (Math.round((double) e.getPoint().getY()
 				/ Settings.CELL_SIZE));
 		x *= Settings.CELL_SIZE;
 		y *= Settings.CELL_SIZE;
-		if(x > ConwayGUI.game.getPreferredSize().width)
+		if (x > ConwayGUI.game.getPreferredSize().width)
 			x = ConwayGUI.game.getPreferredSize().width;
-		if(y > ConwayGUI.game.getPreferredSize().height)
+		if (y > ConwayGUI.game.getPreferredSize().height)
 			y = ConwayGUI.game.getPreferredSize().height;
-		if(x < 0)
+		if (x < 0)
 			x = 0;
-		if(y < 0)
+		if (y < 0)
 			y = 0;
 		Point p = new Point(x, y);
 		return p;
@@ -189,7 +199,7 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 		return p;
 	}
 
-	public Point getCell(Point p) {
+	private Point getCell(Point p) {
 		int x = p.x / Settings.CELL_SIZE;
 		int y = p.y / Settings.CELL_SIZE;
 

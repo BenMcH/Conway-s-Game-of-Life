@@ -166,6 +166,14 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 				/ Settings.CELL_SIZE));
 		x *= Settings.CELL_SIZE;
 		y *= Settings.CELL_SIZE;
+		if(x > ConwayGUI.game.getPreferredSize().width)
+			x = ConwayGUI.game.getPreferredSize().width;
+		if(y > ConwayGUI.game.getPreferredSize().height)
+			y = ConwayGUI.game.getPreferredSize().height;
+		if(x < 0)
+			x = 0;
+		if(y < 0)
+			y = 0;
 		Point p = new Point(x, y);
 		return p;
 	}

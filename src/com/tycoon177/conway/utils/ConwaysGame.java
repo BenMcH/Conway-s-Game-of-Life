@@ -23,6 +23,7 @@ public class ConwaysGame extends JPanel {
 	 */
 	private static final long serialVersionUID = -7548436324523302187L;
 	public int[][] board;
+	private int[][] visited;
 	private boolean showGrid = true;
 	private int generation = 0;
 	private Rectangle selectionRect;
@@ -67,10 +68,12 @@ public class ConwaysGame extends JPanel {
 		this.addMouseListener(listen);
 		this.addMouseMotionListener(listen);
 		this.setDoubleBuffered(true);
+		visited = new int[board.length][board[0].length];
 		// this.setBorder(new LineBorder(Color.BLACK));
 	}
 
 	public void randomizeBoard() {
+
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Random().nextInt(2);
@@ -132,9 +135,12 @@ public class ConwaysGame extends JPanel {
 	}
 
 	public void step() {
+
 		int[][] newBoard = new int[board.length][board[0].length];
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
+				if (board[i][j] == 1)
+					visited[i][j] = 1;
 				int neighbors = getNeighbors(i, j);
 				if (board[i][j] > 0) {
 					if (stayAlive.contains(neighbors))
@@ -186,13 +192,20 @@ public class ConwaysGame extends JPanel {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (selectionRect != null) {
-					Point p = new Point(i * Settings.CELL_SIZE,j * Settings.CELL_SIZE);
-					if(selectionRect.contains(p))
-							g2.setColor(Color.BLUE);
+					Point p = new Point(i * Settings.CELL_SIZE, j
+							* Settings.CELL_SIZE);
+					if (selectionRect.contains(p))
+						g2.setColor(Color.BLUE);
 				}
 				if (board[i][j] > 0) {
 					g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE * j,
 							Settings.CELL_SIZE, Settings.CELL_SIZE);
+				} else {
+					if (visited[i][j] > 0) {
+						g2.setColor(new Color(165, 253, 193));
+						g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE
+								* j, Settings.CELL_SIZE, Settings.CELL_SIZE);
+					}
 				}
 				g2.setColor(Settings.CELL_COLOR);
 			}

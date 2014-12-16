@@ -51,16 +51,16 @@ public class Sliders extends JPanel implements ChangeListener {
 		c.gridx = 0;
 		add(new JLabel("Game Speed"), c);
 		c.gridx = 1;
-		add(fps,c);
-		setBorder(new TitledBorder(new LineBorder(Color.black),"Game Control"));
+		add(fps, c);
+		setBorder(new TitledBorder(new LineBorder(Color.black), "Game Control"));
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 
 	}
-	
-	public void setFPSDisabled(boolean b){
+
+	public void setFPSDisabled(boolean b) {
 		fps.setEnabled(!b);
 	}
 }

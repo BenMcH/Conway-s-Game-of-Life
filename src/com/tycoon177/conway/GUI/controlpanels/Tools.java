@@ -21,9 +21,9 @@ public class Tools extends JPanel {
 	private JRadioButton draw, select, paste;
 	public static final int DRAW = 0, SELECT = 1, PASTE = 2;
 	ButtonGroup group;
-	
+
 	public Tools() {
-		super(new GridLayout(3,1));
+		super(new GridLayout(3, 1));
 		group = new ButtonGroup();
 		draw = new JRadioButton("Draw");
 		draw.setActionCommand("draw");
@@ -40,11 +40,12 @@ public class Tools extends JPanel {
 		add(select);
 		add(paste);
 	}
-	
-	public String getTool(){
-		for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+
+	public String getTool() {
+		for (Enumeration<AbstractButton> buttons = group.getElements(); buttons
+				.hasMoreElements();) {
 			AbstractButton b = buttons.nextElement();
-			if(b.isSelected())
+			if (b.isSelected())
 				return b.getActionCommand();
 		}
 		return "";

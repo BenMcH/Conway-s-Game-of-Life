@@ -51,7 +51,7 @@ public class ConwaysGameWindowListener implements WindowListener {
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		
+
 	}
 
 }

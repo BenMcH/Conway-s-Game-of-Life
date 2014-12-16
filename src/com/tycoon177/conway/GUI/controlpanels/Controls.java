@@ -25,7 +25,7 @@ public class Controls extends JPanel {
 	public static StatsPanel stats;
 	public static Sliders slider;
 	public static Tools tools;
-	
+
 	public Controls() {
 		super();
 		slider = new Sliders();
@@ -37,10 +37,10 @@ public class Controls extends JPanel {
 		setOpaque(true);
 		new PaintBrushEditor();
 		c.anchor = GridBagConstraints.NORTHWEST;
-//		c.fill = GridBagConstraints.HORIZONTAL;
+		// c.fill = GridBagConstraints.HORIZONTAL;
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = .01;
-		c.weighty = .01;
+		c.weighty = 1;
 		c.gridx = 0;
 		c.gridy = 0;
 		add(boardControls, c);
@@ -49,13 +49,17 @@ public class Controls extends JPanel {
 		c.gridy = 0;
 		c.gridx = 2;
 		c.weightx = 0.01;
-		c.gridheight = 2;
-	//	add(p, c);
+		c.gridheight = 1;
+		// add(p, c);
 		c.gridx++;
-		add((tools = new Tools()),c);
+		add((tools = new Tools()), c);
+		c.gridy = 1;
+		c.weighty = .001;
+		add(new GenerationSkip(),c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-	//	c.weightx = .01;
+		// c.weightx = .01;
 		c.gridx++;
+		c.gridy = 0;
 		add(new JPanel(), c);
 		c.gridx++;
 		c.weightx = .01;

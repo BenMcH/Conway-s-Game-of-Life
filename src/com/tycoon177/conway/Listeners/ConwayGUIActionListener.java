@@ -24,10 +24,10 @@ public class ConwayGUIActionListener implements ActionListener {
 	private JTextField number;
 	private JButton set;
 	private JButton cancel;
-	
+
 	public ConwayGUIActionListener() {
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		frame = new JFrame("");
@@ -46,32 +46,35 @@ public class ConwayGUIActionListener implements ActionListener {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		switch(event.getActionCommand()){
+		switch (event.getActionCommand()) {
 		case ("ChangeSize"):
 			GridSizeChanger.showGridSizeChanger();
 			break;
 		case ("ChangeCellSize"):
 			label.setText("Size of cells (in pixels)");
-			set.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					try{
-						ConwayGUI.game.changeCellSize(Integer.parseInt(number.getText()));						
-					}catch(Exception e1){
-						JOptionPane.showMessageDialog(null, "Please enter a whole number!");
+			set.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						ConwayGUI.game.changeCellSize(Integer.parseInt(number
+								.getText()));
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(null,
+								"Please enter a whole number!");
 						return;
 					}
 					frame.dispose();
 				}
 			});
-			cancel.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
+			cancel.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
 					frame.dispose();
 				}
 			});
 			frame.setVisible(true);
 			break;
 		case ("Color"):
-			Color c = JColorChooser.showDialog(null, "Choose a color", Settings.CELL_COLOR);
+			Color c = JColorChooser.showDialog(null, "Choose a color",
+					Settings.CELL_COLOR);
 			Settings.CELL_COLOR = c;
 			ConwayGUI.game.repaint();
 			break;

@@ -37,7 +37,7 @@ public class ConwayGUI extends JFrame {
 			Settings.settingsFile.createNewFile();
 			FileInputStream fis = new FileInputStream(Settings.settingsFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-		//	settings = (Settings) ois.readObject();
+			// settings = (Settings) ois.readObject();
 			ois.close();
 		} catch (Exception e) {
 
@@ -89,6 +89,7 @@ public class ConwayGUI extends JFrame {
 		ConwayGUI.game = g;
 		revalidate();
 		repaint();
+		g.updateStats();
 	}
 
 }

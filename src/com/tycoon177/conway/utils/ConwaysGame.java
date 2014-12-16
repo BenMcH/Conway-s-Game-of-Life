@@ -24,8 +24,9 @@ public class ConwaysGame extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -7548436324523302187L;
-	public int[][] board;
-	private int[][] visited;
+	public volatile byte[][] board;
+	private byte[][] visited;
+	public byte[][] stamp;
 	private boolean showGrid = true;
 	private int generation = 0;
 	private Rectangle selectionRect;
@@ -45,23 +46,23 @@ public class ConwaysGame extends JPanel {
 	};
 
 	public ConwaysGame() {
-		board = new int[10][10];
+		board = new byte[10][10];
 		randomizeBoard();
 		init();
 	}
 
-	public ConwaysGame(int[][] b) {
+	public ConwaysGame(byte[][] b) {
 		board = b;
 		init();
 	}
 
 	public ConwaysGame(int size) {
-		board = new int[size][size];
+		board = new byte[size][size];
 		init();
 	}
 
 	public ConwaysGame(int width, int height) {
-		board = new int[width][height];
+		board = new byte[width][height];
 		init();
 	}
 
@@ -71,30 +72,34 @@ public class ConwaysGame extends JPanel {
 		this.addMouseListener(listen);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
-		visited = new int[board.length][board[0].length];
+		visited = new byte[board.length][board[0].length];
+		stamp = new byte[board.length][board[0].length];
 		// this.setBorder(new LineBorder(Color.BLACK));
-		this.addFocusListener(new FocusListener(){
+		this.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				
+
 			}
 
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				requestFocus();
 			}
-			
+
 		});
+		Settings.GRID_HEIGHT = board.length;
+		Settings.GRID_WIDTH = board[0].length;
 	}
 
 	public void randomizeBoard() {
-
 		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = new Random().nextInt(2);
+				board[i][j] = (byte) (new Random().nextInt(10) < 3 ? 1 : 0);
 			}
+		step();
 		generation = 0;
+		visited = new byte[board.length][board[0].length];
 		updateStats();
 
 	}
@@ -151,16 +156,16 @@ public class ConwaysGame extends JPanel {
 	}
 
 	public void step() {
-
-		int[][] newBoard = new int[board.length][board[0].length];
+		resetBoard();
+		byte[][] newBoard = new byte[board.length][board[0].length];
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] == 1)
 					visited[i][j] = 1;
 				int neighbors = getNeighbors(i, j);
-				if (board[i][j] > 0) {
+				if (board[i][j] == 1 || board[i][j] == 3) {
 					if (stayAlive.contains(neighbors))
-						newBoard[i][j] = 1;
+						newBoard[i][j] = board[i][j];
 					else
 						newBoard[i][j] = 0;
 				} else if (board[i][j] == 0)
@@ -169,17 +174,12 @@ public class ConwaysGame extends JPanel {
 					}
 			}
 		}
-
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = newBoard[i][j];
-			}
-		}
+		board = newBoard;
 		generation++;
 		updateStats();
 	}
 
-	public int[][] getBoard() {
+	public byte[][] getBoard() {
 		return board;
 	}
 
@@ -189,9 +189,9 @@ public class ConwaysGame extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		paintBackground(g2);
 		Stroke stroke = g2.getStroke();
-		paintGrid(g2);
 		g2.setStroke(stroke);
 		paintCells(g2);
+		paintGrid(g2);
 		if (selectionRect != null) {
 			g2.draw(selectionRect);
 		}
@@ -228,9 +228,10 @@ public class ConwaysGame extends JPanel {
 					if (selectionRect.contains(p))
 						g2.setColor(Color.BLUE);
 				}
-				if (board[i][j] > 0) {
-					if (board[i][j] > 1)
+				if (board[i][j] > 0 || stamp[i][j] > 0) {
+					if (stamp[i][j] > 0 && !(board[i][j] > 0))
 						g2.setColor(Color.LIGHT_GRAY);
+
 					g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE * j,
 							Settings.CELL_SIZE, Settings.CELL_SIZE);
 				} else {
@@ -246,12 +247,9 @@ public class ConwaysGame extends JPanel {
 	}
 
 	public void clearBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = 0;
-				repaint();
-			}
-		}
+		board = new byte[board.length][board[0].length];
+		init();
+		repaint();
 		generation = 0;
 		updateStats();
 	}
@@ -350,13 +348,15 @@ public class ConwaysGame extends JPanel {
 	}
 
 	public void resetBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				if (board[i][j] > 1)
-					board[i][j] -= 2;
-			}
-		}
+		stamp = new byte[stamp.length][stamp[0].length];
 	}
 	
-	
+	public void skipToGeneration(int generation){
+		if(this.generation >= generation)
+			JOptionPane.showMessageDialog(null, "The current generation has already reached this generation", "Generation", JOptionPane.PLAIN_MESSAGE);
+		while(this.generation < generation){
+			step();
+		}
+		repaint();
+	}
 }

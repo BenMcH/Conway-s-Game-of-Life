@@ -18,8 +18,7 @@ public class ControlsListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConwayGUI.game.step();
-				controls.repaint();
-				controls.revalidate();
+				ConwayGUI.game.repaint();
 			}
 		});
 	}

@@ -41,22 +41,23 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 		if (inside)
 			point = getPointOnScreen(e);
 		cell = getCell(e.getPoint());
+		setStamp();
+		ConwayGUI.game.repaint();
+		e.consume();
+	}
+
+	private void setStamp() {
 		if (Controls.tools.getTool().equals("paste")) {
 			if (stamp == null)
 				return;
+			ConwayGUI.game.resetBoard();
 			int halfw = 0, halfh = 0;
-			// System.out.println(stamp.length + " " + stamp[0].length);
-			// if (stamp.length > 1 && stamp[0].length > 1) {
-			// if (stamp.length > 1)
 			halfh = stamp.length % 2 == 0 ? stamp.length - stamp.length / 2
 					: stamp.length - (stamp.length + 1) / 2;
 
-			// if (stamp[0].length > 1)
 			halfw = stamp[0].length % 2 == 0 ? stamp[0].length
 					- stamp[0].length / 2 : stamp[0].length
 					- (stamp[0].length + 1) / 2;
-			// }
-			// System.out.println(halfw + " " + halfh);
 			ConwayGUI.game.resetBoard();
 			for (int y = 0; y < stamp.length; y++) {
 				for (int x = 0; x < stamp[0].length; x++) {
@@ -68,13 +69,10 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 				}
 			}
 		}
-		ConwayGUI.game.repaint();
-		e.consume();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// System.out.println(getCell(arg0));
 	}
 
 	@Override
@@ -103,8 +101,6 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-
-		// ConwayGUI.game.stopDrawingSelection();
 		ConwayGUI.game.repaint();
 		if (Controls.tools.getTool().equals("select")) {
 			Point endPoint = getCell(getPointOnScreen(arg0));
@@ -127,9 +123,13 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 			this.point = null;
 			ConwayGUI.game.stopDrawingSelection();
 		}
-
+		if (Controls.tools.getTool().equals("paste"))
+			setStamp();
 	}
 
+	/**
+	 * prints the stamp for debugging purposes
+	 */
 	public void printStamp() {
 		for (int[] row : stamp) {
 			for (int cell : row) {
@@ -154,10 +154,19 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 			}
 	}
 
+	/**
+	 * Sets the ghost of a stamp onto the board.
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	private void setTempStamp(int x, int y) {
-		if (x >= 0 && x < ConwayGUI.game.board.length)
-			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
-				ConwayGUI.game.board[x][y] += 2;
+		if (x >= 0 && x < ConwayGUI.game.stamp.length)
+			if (y >= 0 && y < ConwayGUI.game.stamp[0].length) {
+				if (ConwayGUI.game.stamp[x][y] == 0)
+					ConwayGUI.game.stamp[x][y] = 2;
+				else
+					ConwayGUI.game.stamp[x][y] = 3;
 			}
 	}
 
@@ -185,8 +194,6 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 			halfw = stamp[0].length % 2 == 0 ? stamp[0].length
 					- stamp[0].length / 2 : stamp[0].length
 					- (stamp[0].length + 1) / 2;
-			System.out.println(halfw + " " + halfh);
-			System.out.println(stamp.length + " " + stamp[0].length);
 			for (int y = 0; y < stamp.length; y++) {
 				int y1 = (int) (cell.getY() + y - halfh);
 				for (int x = 0; x < stamp[0].length; x++) {

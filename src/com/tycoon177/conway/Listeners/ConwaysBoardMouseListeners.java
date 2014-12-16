@@ -2,17 +2,15 @@ package com.tycoon177.conway.listeners;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.GUI.controlpanels.PaintBrushEditor;
 import com.tycoon177.conway.utils.Settings;
 
-public class ConwaysBoardMouseListeners implements MouseListener,
-		MouseMotionListener {
+public class ConwaysBoardMouseListeners extends MouseAdapter {
 	private boolean leftClick = false, inside = false;
 	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2), i, j;
 	private int[][] paintbrush;
@@ -35,13 +33,43 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 				ConwayGUI.game.drawSelectionRect(r);
 			}
 		ConwayGUI.gui.repaint();
+		e.consume();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (inside) {
+		if (inside)
 			point = getPointOnScreen(e);
+		cell = getCell(e.getPoint());
+		if (Controls.tools.getTool().equals("paste")) {
+			if (stamp == null)
+				return;
+			int halfw = 0, halfh = 0;
+			// System.out.println(stamp.length + " " + stamp[0].length);
+			// if (stamp.length > 1 && stamp[0].length > 1) {
+			// if (stamp.length > 1)
+			halfh = stamp.length % 2 == 0 ? stamp.length - stamp.length / 2
+					: stamp.length - (stamp.length + 1) / 2;
+
+			// if (stamp[0].length > 1)
+			halfw = stamp[0].length % 2 == 0 ? stamp[0].length
+					- stamp[0].length / 2 : stamp[0].length
+					- (stamp[0].length + 1) / 2;
+			// }
+			// System.out.println(halfw + " " + halfh);
+			ConwayGUI.game.resetBoard();
+			for (int y = 0; y < stamp.length; y++) {
+				for (int x = 0; x < stamp[0].length; x++) {
+					int x1 = (int) (cell.getX() + x - halfw);
+					int y1 = (int) (cell.getY() + y - halfh);
+					if (stamp[y][x] == 1) {
+						setTempStamp(x1, y1);
+					}
+				}
+			}
 		}
+		ConwayGUI.game.repaint();
+		e.consume();
 	}
 
 	@Override
@@ -126,6 +154,13 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 			}
 	}
 
+	private void setTempStamp(int x, int y) {
+		if (x >= 0 && x < ConwayGUI.game.board.length)
+			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
+				ConwayGUI.game.board[x][y] += 2;
+			}
+	}
+
 	private void changeCell(int val) {
 		String tool = Controls.tools.getTool();
 		if (tool.equals("draw")) {
@@ -145,21 +180,17 @@ public class ConwaysBoardMouseListeners implements MouseListener,
 			if (stamp == null)
 				return;
 			int halfw = 0, halfh = 0;
-			//System.out.println(stamp.length + " " + stamp[0].length);
-			if (stamp.length > 1 && stamp[0].length > 1) {
-				if (stamp.length > 1)
-					halfw = stamp.length % 2 == 0 ? stamp.length / 2
-							: (stamp.length + 1) / 2;
-
-				if (stamp[0].length > 1)
-					halfh = stamp[0].length % 2 == 0 ? stamp[0].length / 2
-							: (stamp[0].length + 1) / 2;
-			}
-			//System.out.println(halfw + " " + halfh);
+			halfh = stamp.length % 2 == 0 ? stamp.length - stamp.length / 2
+					: stamp.length - (stamp.length + 1) / 2;
+			halfw = stamp[0].length % 2 == 0 ? stamp[0].length
+					- stamp[0].length / 2 : stamp[0].length
+					- (stamp[0].length + 1) / 2;
+			System.out.println(halfw + " " + halfh);
+			System.out.println(stamp.length + " " + stamp[0].length);
 			for (int y = 0; y < stamp.length; y++) {
+				int y1 = (int) (cell.getY() + y - halfh);
 				for (int x = 0; x < stamp[0].length; x++) {
 					int x1 = (int) (cell.getX() + x - halfw);
-					int y1 = (int) (cell.getY() + y - halfh);
 					if (stamp[y][x] == 1) {
 						addCell(x1, y1);
 					}

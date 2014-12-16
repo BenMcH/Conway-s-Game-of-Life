@@ -22,10 +22,6 @@ public class ConwayMenuBar extends JMenuBar {
 		changeSize.setActionCommand("ChangeSize");
 		changeSize.addActionListener(actionListener);
 		edit.add(changeSize);
-		JMenuItem changeCellSize = new JMenuItem("Change Cell Size");
-		changeCellSize.setActionCommand("ChangeCellSize");
-		changeCellSize.addActionListener(actionListener);
-		edit.add(changeCellSize);
 		JMenuItem preferences = new JMenuItem("Preferences");
 		preferences.setActionCommand("pref");
 		preferences.addActionListener(actionListener);

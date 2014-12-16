@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -65,11 +67,25 @@ public class ConwaysGame extends JPanel {
 
 	public void init() {
 		ConwaysBoardMouseListeners listen = new ConwaysBoardMouseListeners();
-		this.addMouseListener(listen);
 		this.addMouseMotionListener(listen);
+		this.addMouseListener(listen);
 		this.setDoubleBuffered(true);
+		this.setFocusable(true);
 		visited = new int[board.length][board[0].length];
 		// this.setBorder(new LineBorder(Color.BLACK));
+		this.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				requestFocus();
+			}
+			
+		});
 	}
 
 	public void randomizeBoard() {
@@ -171,11 +187,24 @@ public class ConwaysGame extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		paintBackground(g2);
+		Stroke stroke = g2.getStroke();
+		paintGrid(g2);
+		g2.setStroke(stroke);
+		paintCells(g2);
+		if (selectionRect != null) {
+			g2.draw(selectionRect);
+		}
+	}
+
+	private void paintBackground(Graphics2D g2) {
 		g2.setColor(Settings.BACKGROUND_COLOR);
 		g2.fillRect(0, 0, this.getPreferredSize().width,
 				this.getPreferredSize().height);
+	}
+
+	private void paintGrid(Graphics2D g2) {
 		g2.setColor(Settings.GRID_COLOR);
-		Stroke stroke = g2.getStroke();
 		g2.setStroke(new BasicStroke());
 		if (showGrid) {
 			g2.drawRect(0, 0, board.length * Settings.CELL_SIZE,
@@ -187,7 +216,9 @@ public class ConwaysGame extends JPanel {
 				g2.drawRect(0, i, board.length * Settings.CELL_SIZE, 0);
 
 		}
-		g2.setStroke(stroke);
+	}
+
+	private void paintCells(Graphics2D g2) {
 		g2.setColor(Settings.CELL_COLOR);
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
@@ -198,6 +229,8 @@ public class ConwaysGame extends JPanel {
 						g2.setColor(Color.BLUE);
 				}
 				if (board[i][j] > 0) {
+					if (board[i][j] > 1)
+						g2.setColor(Color.LIGHT_GRAY);
 					g2.fillRect(Settings.CELL_SIZE * i, Settings.CELL_SIZE * j,
 							Settings.CELL_SIZE, Settings.CELL_SIZE);
 				} else {
@@ -210,10 +243,6 @@ public class ConwaysGame extends JPanel {
 				g2.setColor(Settings.CELL_COLOR);
 			}
 		}
-		if (selectionRect != null) {
-			g2.draw(selectionRect);
-		}
-
 	}
 
 	public void clearBoard() {
@@ -319,4 +348,15 @@ public class ConwaysGame extends JPanel {
 	public void stopDrawingSelection() {
 		selectionRect = null;
 	}
+
+	public void resetBoard() {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if (board[i][j] > 1)
+					board[i][j] -= 2;
+			}
+		}
+	}
+	
+	
 }

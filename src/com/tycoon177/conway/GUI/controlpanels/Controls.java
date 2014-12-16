@@ -35,7 +35,7 @@ public class Controls extends JPanel {
 		JPanel boardControls = new BoardControls();
 		GridBagConstraints c = new GridBagConstraints();
 		setOpaque(true);
-		//PaintBrushEditor p = new PaintBrushEditor();
+		new PaintBrushEditor();
 		c.anchor = GridBagConstraints.NORTHWEST;
 //		c.fill = GridBagConstraints.HORIZONTAL;
 		c.fill = GridBagConstraints.BOTH;

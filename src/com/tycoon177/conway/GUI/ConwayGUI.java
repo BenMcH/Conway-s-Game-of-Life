@@ -2,15 +2,12 @@ package com.tycoon177.conway.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -49,25 +46,19 @@ public class ConwayGUI extends JFrame {
 		setSize(920, 830);
 		setTitle("Conways Game of Life, made by tycoon177 - Stopped");
 		// Set the UI to look more like the system.
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 		pane = new JScrollPane(g);
 		pane.getViewport().setAlignmentX(CENTER_ALIGNMENT);
 		setJMenuBar(new ConwayMenuBar());
 		game = g;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		this.getContentPane().add(pane, BorderLayout.CENTER);
 		// Make the right panel
 		controls.setBorder(new TitledBorder(new LineBorder(Color.black),
 				"Controls"));
 		this.add(controls, BorderLayout.NORTH);
 		// setResizable(false);
-		repaint();
-		revalidate();
+		//repaint();
+	//	revalidate();
 		gui = this;
 		setLocationRelativeTo(null);
 	}
@@ -75,8 +66,12 @@ public class ConwayGUI extends JFrame {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		ConwaysGame game = new ConwaysGame(100);
@@ -85,18 +80,9 @@ public class ConwayGUI extends JFrame {
 		// new PreferencesWindow().setVisible(true);;
 	}
 
-	public void setNewBoard(ConwaysGame g) {
-		game.dispose();
-		ConwayGUI.game = g;
-		System.out.println("Setting viewport");
-		JViewport port = new JViewport();
-		port.setView(g);
-		System.out.println("view set");
-		pane.setViewport(port);
-		System.out.println("view added");
-		System.out.println("Done Settings");
-		// g.updateStats();
-		// game.revalidate();
+	public void setNewBoard(int width, int height) {
+		game.reinit(width, height);
+		//game.repaint();
 	}
 
 }

@@ -6,9 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
@@ -49,47 +47,55 @@ public class ConwaysGame extends JComponent {
 	};
 
 	public ConwaysGame() {
+		firstSetup();
 		board = new Cell[10][10];
 		randomizeBoard();
 		init();
 	}
 
 	public ConwaysGame(Cell[][] b) {
+		firstSetup();
 		board = b;
 		init();
 	}
 
 	public ConwaysGame(int size) {
+		firstSetup();
 		board = new Cell[size][size];
 		init();
 	}
 
 	public ConwaysGame(int width, int height) {
+		firstSetup();
 		board = new Cell[width][height];
 		init();
 	}
-
-	public void init() {
+	
+	private void firstSetup(){
 		ConwaysBoardMouseListeners listen = new ConwaysBoardMouseListeners();
 		this.addMouseMotionListener(listen);
 		this.addMouseListener(listen);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
-		stamp = new byte[board.length][board[0].length];
-		// this.setBorder(new LineBorder(Color.BLACK));
 		this.addFocusListener(new FocusListener() {
-
+			
 			@Override
 			public void focusGained(FocusEvent arg0) {
-
+				
 			}
-
+			
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				requestFocus();
 			}
-
+			
 		});
+
+	}
+
+	public void init() {
+		stamp = new byte[board.length][board[0].length];
+		// this.setBorder(new LineBorder(Color.BLACK));
 		numberDead = 0;
 		Settings.GRID_HEIGHT = board.length;
 		Settings.GRID_WIDTH = board[0].length;
@@ -101,7 +107,6 @@ public class ConwaysGame extends JComponent {
 		for (int i = 0; i < board.length; i++) {
 			c.gridx++;
 			c.gridy = 0;
-			c.insets = new Insets(0, 0, 0, 0);
 			c.weightx = .01;
 			c.weighty = .01;
 			for (int j = 0; j < board[0].length; j++) {
@@ -116,6 +121,17 @@ public class ConwaysGame extends JComponent {
 		c.gridx++;
 		add(new JPanel(), c);
 		System.out.println("Done with init");
+	}
+	
+	public void reinit(int width, int height){
+		Controls.listen.runTimer(false);
+		System.out.println("Tim");
+		
+		board = new Cell[width][height];
+		System.out.println("Tim");
+		init();
+		System.out.println("Tim");
+		//repaint();
 	}
 
 	public void randomizeBoard() {
@@ -225,8 +241,6 @@ public class ConwaysGame extends JComponent {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		paintBackground(g2);
-		Stroke stroke = g2.getStroke();
-		g2.setStroke(stroke);
 		paintGrid(g2);
 		if (selectionRect != null) {
 			g2.draw(selectionRect);

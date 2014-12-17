@@ -19,52 +19,58 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		j = e.getY() / Settings.CELL_SIZE;
-		i = e.getX() / Settings.CELL_SIZE;
-		cell = getCell(e.getPoint());
-		paintbrush = PaintBrushEditor.getPaintBrush();
-		changeCell(leftClick ? 1 : 0);
-		if (Controls.tools.getTool().equals("select"))
-			if (this.point == null)
-				point = getPointOnScreen(e);
-			else {
-				Rectangle r = new Rectangle(point);
-				r.add(getPointOnScreen(e));
-				ConwayGUI.game.drawSelectionRect(r);
-			}
-		ConwayGUI.gui.repaint();
+		System.out.println("Dragged");
+		if (inside) {
+			j = e.getY() / Settings.CELL_SIZE;
+			i = e.getX() / Settings.CELL_SIZE;
+			cell = getCell(e.getPoint());
+			paintbrush = PaintBrushEditor.getPaintBrush();
+			changeCell(leftClick ? 1 : 0);
+			if (Controls.tools.getTool().equals("select"))
+				if (this.point == null)
+					point = getPointOnScreen(e);
+				else {
+					Rectangle r = new Rectangle(point);
+					r.add(getPointOnScreen(e));
+					ConwayGUI.game.drawSelectionRect(r);
+				}
+			ConwayGUI.gui.repaint();
+		}
 		e.consume();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (inside)
+		if (inside) {
 			point = getPointOnScreen(e);
-		cell = getCell(e.getPoint());
-		setStamp();
-		ConwayGUI.game.repaint();
+			cell = getCell(e.getPoint());
+			setStamp();
+			ConwayGUI.game.repaint();
+		}
 		e.consume();
 	}
 
 	private void setStamp() {
-		if (Controls.tools.getTool().equals("paste")) {
-			if (stamp == null)
-				return;
-			ConwayGUI.game.resetBoard();
-			int halfw = 0, halfh = 0;
-			halfh = stamp.length % 2 == 0 ? stamp.length - stamp.length / 2
-					: stamp.length - (stamp.length + 1) / 2;
+		if (inside) {
+			if (Controls.tools.getTool().equals("paste")) {
+				if (stamp == null)
+					return;
+				ConwayGUI.game.resetBoard();
+				int halfw = 0, halfh = 0;
+				halfh = stamp.length % 2 == 0 ? stamp.length - stamp.length / 2
+						: stamp.length - (stamp.length + 1) / 2;
 
-			halfw = stamp[0].length % 2 == 0 ? stamp[0].length
-					- stamp[0].length / 2 : stamp[0].length
-					- (stamp[0].length + 1) / 2;
-			ConwayGUI.game.resetBoard();
-			for (int y = 0; y < stamp.length; y++) {
-				for (int x = 0; x < stamp[0].length; x++) {
-					int x1 = (int) (cell.getX() + x - halfw);
-					int y1 = (int) (cell.getY() + y - halfh);
-					if (stamp[y][x] == 1) {
-						setTempStamp(x1, y1);
+				halfw = stamp[0].length % 2 == 0 ? stamp[0].length
+						- stamp[0].length / 2 : stamp[0].length
+						- (stamp[0].length + 1) / 2;
+				ConwayGUI.game.resetBoard();
+				for (int y = 0; y < stamp.length; y++) {
+					for (int x = 0; x < stamp[0].length; x++) {
+						int x1 = (int) (cell.getX() + x - halfw);
+						int y1 = (int) (cell.getY() + y - halfh);
+						if (stamp[y][x] == 1) {
+							setTempStamp(x1, y1);
+						}
 					}
 				}
 			}
@@ -73,6 +79,7 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("Clicked");
 	}
 
 	@Override
@@ -87,44 +94,52 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		leftClick = e.getButton() == MouseEvent.BUTTON1;
-		j = e.getY() / Settings.CELL_SIZE;
-		i = e.getX() / Settings.CELL_SIZE;
-		cell = getCell(e.getPoint());
-		paintbrush = PaintBrushEditor.getPaintBrush();
-		changeCell(leftClick ? 1 : 0);
-		ConwayGUI.gui.repaint();
-		// String tool = Controls.tools.getTool();
-		this.point = getPointOnScreen(e);
-		ConwayGUI.game.stopDrawingSelection();
+		System.out.println("Pressed");
+		if (inside) {
+			leftClick = e.getButton() == MouseEvent.BUTTON1;
+			j = e.getY() / Settings.CELL_SIZE;
+			i = e.getX() / Settings.CELL_SIZE;
+			cell = getCell(e.getPoint());
+			paintbrush = PaintBrushEditor.getPaintBrush();
+			changeCell(leftClick ? 1 : 0);
+			ConwayGUI.gui.repaint();
+			// String tool = Controls.tools.getTool();
+			this.point = getPointOnScreen(e);
+			ConwayGUI.game.stopDrawingSelection();
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		ConwayGUI.game.repaint();
-		if (Controls.tools.getTool().equals("select")) {
-			Point endPoint = getCell(getPointOnScreen(arg0));
-			if (endPoint.x < 0)
-				endPoint.x = 0;
-			if (endPoint.x >= ConwayGUI.game.board.length)
-				endPoint.x = ConwayGUI.game.board.length - 1;
+		System.out.println("Released");
+		if (inside) {
+			ConwayGUI.game.repaint();
+			if (Controls.tools.getTool().equals("select")) {
+				Point endPoint = getCell(getPointOnScreen(arg0));
+				if (endPoint.x < 0)
+					endPoint.x = 0;
+				if (endPoint.x >= ConwayGUI.game.board.length)
+					endPoint.x = ConwayGUI.game.board.length - 1;
 
-			Rectangle r = new Rectangle(getCell(point));
-			r.add(endPoint);
+				Rectangle r = new Rectangle(getCell(point));
+				r.add(endPoint);
 
-			stamp = new int[r.height][r.width];
+				stamp = new int[r.height][r.width];
 
-			for (int i = 0; i < stamp[0].length; i++) {
-				for (int j = 0; j < stamp.length; j++) {
-					//stamp[j][i] = ConwayGUI.game.board[(int) (r.getMinX() + i)][(int) (r
-						//	.getMinY() + j)];
+				for (int i = 0; i < stamp[0].length; i++) {
+					for (int j = 0; j < stamp.length; j++) {
+						// stamp[j][i] = ConwayGUI.game.board[(int) (r.getMinX()
+						// +
+						// i)][(int) (r
+						// .getMinY() + j)];
+					}
 				}
+				this.point = null;
+				ConwayGUI.game.stopDrawingSelection();
 			}
-			this.point = null;
-			ConwayGUI.game.stopDrawingSelection();
+			if (Controls.tools.getTool().equals("paste"))
+				setStamp();
 		}
-		if (Controls.tools.getTool().equals("paste"))
-			setStamp();
 	}
 
 	/**
@@ -143,14 +158,16 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 	private void addCell(int x, int y) {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
-				ConwayGUI.game.board[x][y].setAlive(true);;
+				ConwayGUI.game.board[x][y].setAlive(true);
+				;
 			}
 	}
 
 	private void removeCell(int x, int y) {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
-				ConwayGUI.game.board[x][y].setAlive(false);;
+				ConwayGUI.game.board[x][y].setAlive(false);
+				;
 			}
 	}
 

@@ -60,8 +60,7 @@ public class GridSizeChanger {
 				try {
 					int w = Integer.parseInt(width.getText());
 					int h = Integer.parseInt(height.getText());
-					ConwaysGame game = new ConwaysGame(w, h);
-					ConwayGUI.gui.setNewBoard(game);
+					ConwayGUI.gui.setNewBoard(w,h);
 					frame.setVisible(false);
 					frame.dispose();
 				} catch (NumberFormatException e) {

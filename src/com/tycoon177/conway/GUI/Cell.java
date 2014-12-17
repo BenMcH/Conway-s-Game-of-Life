@@ -64,14 +64,16 @@ public class Cell extends JComponent {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		if (!isAlive() && !isHighlighted() && !hasBeenVisited())
-			return;
+		//if (!isAlive() && !isHighlighted() && !hasBeenVisited())
+			//return;
 		changed = false;
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Settings.CELL_COLOR);
 		if (isAlive() || isHighlighted()) {
-			if (isHighlighted() && !isAlive())
+			if (isHighlighted())
 				g2.setColor(Color.LIGHT_GRAY);
+			if(isAlive())
+				g2.setColor(Settings.CELL_COLOR);
 		} else if (hasBeenVisited()) {
 			g2.setColor(new Color(165, 253, 193));
 		} else

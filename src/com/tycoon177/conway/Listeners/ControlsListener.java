@@ -63,5 +63,13 @@ public class ControlsListener implements ActionListener {
 		timer.setDelay(1000 / updates);
 
 	}
+	
+	public void runTimer(boolean run){
+		if(timer.isRunning()){
+			if(!run) timer.stop();
+		}else
+			if(run) timer.start();
+		
+	}
 
 }

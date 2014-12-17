@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.listeners.ConwaysBoardMouseListeners;
 
-public class ConwaysGame extends JPanel {
+public class ConwaysGameOLD extends JPanel {
 	/**
 	 * 
 	 */
@@ -30,6 +30,7 @@ public class ConwaysGame extends JPanel {
 	private boolean showGrid = true;
 	private int generation = 0;
 	private Rectangle selectionRect;
+	private long numberDead = 0;
 
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
@@ -45,23 +46,23 @@ public class ConwaysGame extends JPanel {
 		}
 	};
 
-	public ConwaysGame() {
+	public ConwaysGameOLD() {
 		board = new byte[10][10];
 		randomizeBoard();
 		init();
 	}
 
-	public ConwaysGame(byte[][] b) {
+	public ConwaysGameOLD(byte[][] b) {
 		board = b;
 		init();
 	}
 
-	public ConwaysGame(int size) {
+	public ConwaysGameOLD(int size) {
 		board = new byte[size][size];
 		init();
 	}
 
-	public ConwaysGame(int width, int height) {
+	public ConwaysGameOLD(int width, int height) {
 		board = new byte[width][height];
 		init();
 	}
@@ -88,6 +89,7 @@ public class ConwaysGame extends JPanel {
 			}
 
 		});
+		numberDead = 0;
 		Settings.GRID_HEIGHT = board.length;
 		Settings.GRID_WIDTH = board[0].length;
 	}
@@ -99,6 +101,7 @@ public class ConwaysGame extends JPanel {
 			}
 		step();
 		generation = 0;
+		numberDead = 0;
 		visited = new byte[board.length][board[0].length];
 		updateStats();
 
@@ -163,11 +166,14 @@ public class ConwaysGame extends JPanel {
 				if (board[i][j] == 1)
 					visited[i][j] = 1;
 				int neighbors = getNeighbors(i, j);
-				if (board[i][j] == 1 || board[i][j] == 3) {
+				if (board[i][j] == 1) {
 					if (stayAlive.contains(neighbors))
 						newBoard[i][j] = board[i][j];
-					else
+					else {
 						newBoard[i][j] = 0;
+						numberDead++;
+					}
+
 				} else if (board[i][j] == 0)
 					if (comeAlive.contains(neighbors)) {
 						newBoard[i][j] = 1;
@@ -337,6 +343,7 @@ public class ConwaysGame extends JPanel {
 	public void updateStats() {
 		Controls.stats.setGeneration(getGeneraion());
 		Controls.stats.setCellsAlive(getAlive());
+		Controls.stats.setCellsDead(getDead());
 	}
 
 	public void drawSelectionRect(Rectangle r) {
@@ -350,13 +357,21 @@ public class ConwaysGame extends JPanel {
 	public void resetBoard() {
 		stamp = new byte[stamp.length][stamp[0].length];
 	}
-	
-	public void skipToGeneration(int generation){
-		if(this.generation >= generation)
-			JOptionPane.showMessageDialog(null, "The current generation has already reached this generation", "Generation", JOptionPane.PLAIN_MESSAGE);
-		while(this.generation < generation){
+
+	public void skipToGeneration(int generation) {
+		if (this.generation >= generation)
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"The current generation has already reached this generation",
+							"Generation", JOptionPane.PLAIN_MESSAGE);
+		while (this.generation < generation) {
 			step();
 		}
 		repaint();
+	}
+
+	public long getDead() {
+		return numberDead;
 	}
 }

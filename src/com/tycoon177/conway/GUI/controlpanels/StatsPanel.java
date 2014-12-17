@@ -9,8 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import com.tycoon177.conway.utils.Settings;
-
 public class StatsPanel extends JPanel {
 
 	/**
@@ -24,12 +22,11 @@ public class StatsPanel extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		generation = new JLabel("0");
 		cellsAlive = new JLabel("0");
-		cellsDead = new JLabel(""
-				+ (Settings.GRID_HEIGHT * Settings.GRID_WIDTH));
+		cellsDead = new JLabel("0");
 		c.weightx = 1;
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		add(new JLabel("Generation: "), c);
 		c.gridx = 1;
 		add(generation, c);
@@ -42,7 +39,8 @@ public class StatsPanel extends JPanel {
 		c.gridx = 0;
 		add(new JLabel("Dead Cells: "), c);
 		c.gridx = 1;
-		// add(cellsDead, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		add(cellsDead, c);
 		setBorder(new TitledBorder(new LineBorder(Color.black), "Stats"));
 
 	}
@@ -53,8 +51,10 @@ public class StatsPanel extends JPanel {
 
 	public void setCellsAlive(int x) {
 		cellsAlive.setText("" + x);
-		cellsDead.setText(""
-				+ ((Settings.GRID_HEIGHT * Settings.GRID_WIDTH) - x));
+	}
+
+	public void setCellsDead(long l) {
+		cellsDead.setText("" + l);
 	}
 
 }

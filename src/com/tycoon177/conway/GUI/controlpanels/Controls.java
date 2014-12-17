@@ -45,7 +45,9 @@ public class Controls extends JPanel {
 		c.gridy = 0;
 		add(boardControls, c);
 		c.gridy = 1;
+		c.gridwidth = 1;
 		add(slider, c);
+		c.gridwidth = 1;
 		c.gridy = 0;
 		c.gridx = 2;
 		c.weightx = 0.01;
@@ -53,17 +55,20 @@ public class Controls extends JPanel {
 		// add(p, c);
 		c.gridx++;
 		add((tools = new Tools()), c);
-		c.gridy = 1;
-		c.weighty = .001;
-		add(new GenerationSkip(),c);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		c.fill = GridBagConstraints.BOTH;
 		// c.weightx = .01;
 		c.gridx++;
 		c.gridy = 0;
+		//c.weighty = .001;
+		add(new GenerationSkip(),c);
+		c.gridy = 0;
+		c.gridx++;
 		add(new JPanel(), c);
 		c.gridx++;
 		c.weightx = .01;
 		add(stats, c);
+
 	}
 
 	@Override

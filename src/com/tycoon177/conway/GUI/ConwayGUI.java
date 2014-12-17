@@ -2,11 +2,13 @@ package com.tycoon177.conway.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
@@ -14,7 +16,6 @@ import javax.swing.border.TitledBorder;
 
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.listeners.ConwaysGameWindowListener;
-import com.tycoon177.conway.utils.ConwaysGame;
 import com.tycoon177.conway.utils.Settings;
 
 public class ConwayGUI extends JFrame {
@@ -37,7 +38,7 @@ public class ConwayGUI extends JFrame {
 			Settings.settingsFile.createNewFile();
 			FileInputStream fis = new FileInputStream(Settings.settingsFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			// settings = (Settings) ois.readObject();
+			settings = (Settings) ois.readObject();
 			ois.close();
 		} catch (Exception e) {
 
@@ -85,11 +86,17 @@ public class ConwayGUI extends JFrame {
 	}
 
 	public void setNewBoard(ConwaysGame g) {
-		pane.setViewportView(g);
+		game.dispose();
 		ConwayGUI.game = g;
-		revalidate();
-		repaint();
-		g.updateStats();
+		System.out.println("Setting viewport");
+		JViewport port = new JViewport();
+		port.setView(g);
+		System.out.println("view set");
+		pane.setViewport(port);
+		System.out.println("view added");
+		System.out.println("Done Settings");
+		// g.updateStats();
+		// game.revalidate();
 	}
 
 }

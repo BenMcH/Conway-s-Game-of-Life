@@ -116,8 +116,8 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 			for (int i = 0; i < stamp[0].length; i++) {
 				for (int j = 0; j < stamp.length; j++) {
-					stamp[j][i] = ConwayGUI.game.board[(int) (r.getMinX() + i)][(int) (r
-							.getMinY() + j)];
+					//stamp[j][i] = ConwayGUI.game.board[(int) (r.getMinX() + i)][(int) (r
+						//	.getMinY() + j)];
 				}
 			}
 			this.point = null;
@@ -143,14 +143,14 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 	private void addCell(int x, int y) {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
-				ConwayGUI.game.board[x][y] = 1;
+				ConwayGUI.game.board[x][y].setAlive(true);;
 			}
 	}
 
 	private void removeCell(int x, int y) {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
-				ConwayGUI.game.board[x][y] = 0;
+				ConwayGUI.game.board[x][y].setAlive(false);;
 			}
 	}
 

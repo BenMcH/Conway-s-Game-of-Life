@@ -22,16 +22,17 @@ public class Sliders extends JPanel implements ChangeListener {
 	 */
 	private static final long serialVersionUID = -7008161015292605195L;
 	JSlider zoom, fps;
-	private int min = 1, max = 50, value = 8;
+	private int min = 2, max = 50;
 
 	public Sliders() {
 		super(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		zoom = new JSlider(min, max, value);
+		zoom = new JSlider(min, max, Settings.CELL_SIZE);
 		fps = new JSlider(1, 300, 20);
 		zoom.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				Settings.CELL_SIZE = zoom.getValue();
+				ConwayGUI.game.revalidate();
 				ConwayGUI.game.repaint();
 			}
 		});
@@ -61,6 +62,6 @@ public class Sliders extends JPanel implements ChangeListener {
 	}
 
 	public void setFPSDisabled(boolean b) {
-		fps.setEnabled(!b);
+		fps.setEnabled(b);
 	}
 }

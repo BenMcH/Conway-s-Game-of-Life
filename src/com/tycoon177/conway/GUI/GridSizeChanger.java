@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.tycoon177.conway.utils.ConwaysGame;
 import com.tycoon177.conway.utils.Settings;
 
 public class GridSizeChanger {

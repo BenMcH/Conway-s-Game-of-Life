@@ -1,88 +1,52 @@
 package com.tycoon177.conway.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import com.tycoon177.conway.GUI.controlpanels.Controls;
-import com.tycoon177.conway.listeners.ConwaysGameWindowListener;
-import com.tycoon177.conway.utils.Settings;
+import com.tycoon177.conway.GUI.controlpanels.PaintBrushEditor;
 
-public class ConwayGUI extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1233273878556674435L;
+public class ConwayGUI extends Application {
 	public static ConwayGUI gui;
 	public static ConwaysGame game;
 	public static Controls controls;
 	JScrollPane pane;
 
-	public ConwayGUI(ConwaysGame g) {
-		super();
-		// Load settings
-		@SuppressWarnings("unused")
-		Settings settings = null;
-		try {
-			Settings.settingsFile.getParentFile().mkdirs();
-			Settings.settingsFile.createNewFile();
-			FileInputStream fis = new FileInputStream(Settings.settingsFile);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			settings = (Settings) ois.readObject();
-			ois.close();
-		} catch (Exception e) {
-
-		}
-
-		this.addWindowListener(new ConwaysGameWindowListener());
-		ConwayGUI.controls = new Controls();
-		setSize(920, 830);
-		setTitle("Conways Game of Life, made by tycoon177 - Stopped");
-		// Set the UI to look more like the system.
-		pane = new JScrollPane(g);
-		pane.getViewport().setAlignmentX(CENTER_ALIGNMENT);
-		setJMenuBar(new ConwayMenuBar());
-		game = g;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().add(pane, BorderLayout.CENTER);
-		// Make the right panel
-		controls.setBorder(new TitledBorder(new LineBorder(Color.black),
-				"Controls"));
-		this.add(controls, BorderLayout.NORTH);
-		// setResizable(false);
-		//repaint();
-	//	revalidate();
-		gui = this;
-		setLocationRelativeTo(null);
-	}
-
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ConwaysGame game = new ConwaysGame(100);
-		ConwayGUI gui = new ConwayGUI(game);
-		gui.setVisible(true);
-		// new PreferencesWindow().setVisible(true);;
+		launch(args);
 	}
 
 	public void setNewBoard(int width, int height) {
 		game.reinit(width, height);
 		//game.repaint();
 	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		new PaintBrushEditor();
+		controls = new Controls();
+		game = new ConwaysGame(100);
+		BorderPane root = new BorderPane();
+		game.drawCells();
+		game.setPos(controls.getHeight());
+		ScrollPane gamePane = new ScrollPane(game);
+		root.setTop(controls);
+		root.setCenter(gamePane);
+		Scene scene = new Scene(root);
+		
+		stage.setScene(scene);
+		stage.show();
+		
+	}
+
+	public static int getPos() {
+		return (int)controls.getHeight();
+	}
+	
 
 }

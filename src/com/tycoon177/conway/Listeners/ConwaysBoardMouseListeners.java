@@ -2,31 +2,28 @@ package com.tycoon177.conway.listeners;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.GUI.controlpanels.PaintBrushEditor;
 import com.tycoon177.conway.utils.Settings;
 
-public class ConwaysBoardMouseListeners extends MouseAdapter {
-	private boolean leftClick = false, inside = false;
-	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2), i, j;
-	private int[][] paintbrush;
-	private Point point, cell;
+public class ConwaysBoardMouseListeners {
+	private boolean leftClick = false, inside = true;
+	private int halfPt = ((PaintBrushEditor.SIZE - 1) / 2);
+	private Point point, cell, ij;
 	private int[][] stamp;
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		System.out.println("Dragged");
 		if (inside) {
-			j = e.getY() / Settings.CELL_SIZE;
-			i = e.getX() / Settings.CELL_SIZE;
-			cell = getCell(e.getPoint());
-			paintbrush = PaintBrushEditor.getPaintBrush();
+			ij = getCell(e.getSceneX(), e.getSceneY());
+			cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
 			changeCell(leftClick ? 1 : 0);
-			if (Controls.tools.getTool().equals("select"))
+			if (Controls.tools.getTool().equalsIgnoreCase("select"))
 				if (this.point == null)
 					point = getPointOnScreen(e);
 				else {
@@ -34,25 +31,24 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 					r.add(getPointOnScreen(e));
 					ConwayGUI.game.drawSelectionRect(r);
 				}
-			ConwayGUI.gui.repaint();
+			// ConwayGUI.gui.repaint();
 		}
 		e.consume();
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (inside) {
 			point = getPointOnScreen(e);
-			cell = getCell(e.getPoint());
+			cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
 			setStamp();
-			ConwayGUI.game.repaint();
+			// ConwayGUI.game.repaint();
 		}
 		e.consume();
 	}
 
 	private void setStamp() {
 		if (inside) {
-			if (Controls.tools.getTool().equals("paste")) {
+			if (Controls.tools.getTool().equalsIgnoreCase("paste")) {
 				if (stamp == null)
 					return;
 				ConwayGUI.game.resetBoard();
@@ -77,44 +73,27 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 		}
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		System.out.println("Clicked");
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		inside = true;
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		inside = false;
-	}
-
-	@Override
 	public void mousePressed(MouseEvent e) {
 		System.out.println("Pressed");
-		if (inside) {
-			leftClick = e.getButton() == MouseEvent.BUTTON1;
-			j = e.getY() / Settings.CELL_SIZE;
-			i = e.getX() / Settings.CELL_SIZE;
-			cell = getCell(e.getPoint());
-			paintbrush = PaintBrushEditor.getPaintBrush();
-			changeCell(leftClick ? 1 : 0);
-			ConwayGUI.gui.repaint();
-			// String tool = Controls.tools.getTool();
-			this.point = getPointOnScreen(e);
-			ConwayGUI.game.stopDrawingSelection();
-		}
+		leftClick = e.getButton() == MouseButton.PRIMARY;
+		ij = getCell(e.getSceneX(), e.getSceneY());
+		cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
+		changeCell(leftClick ? 1 : 0);
+		// ConwayGUI.gui.repaint();
+		// String tool = Controls.tools.getTool();
+		this.point = getPointOnScreen(e);
+		ConwayGUI.game.stopDrawingSelection();
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		System.out.println("Released");
 		if (inside) {
-			ConwayGUI.game.repaint();
-			if (Controls.tools.getTool().equals("select")) {
+			// ConwayGUI.game.repaint();
+			if (Controls.tools.getTool().equalsIgnoreCase("select")) {
 				Point endPoint = getCell(getPointOnScreen(arg0));
 				if (endPoint.x < 0)
 					endPoint.x = 0;
@@ -137,7 +116,7 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 				this.point = null;
 				ConwayGUI.game.stopDrawingSelection();
 			}
-			if (Controls.tools.getTool().equals("paste"))
+			if (Controls.tools.getTool().equalsIgnoreCase("paste"))
 				setStamp();
 		}
 	}
@@ -159,7 +138,7 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
 				ConwayGUI.game.board[x][y].setAlive(true);
-				;
+				repaint();
 			}
 	}
 
@@ -167,7 +146,7 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 		if (x >= 0 && x < ConwayGUI.game.board.length)
 			if (y >= 0 && y < ConwayGUI.game.board[0].length) {
 				ConwayGUI.game.board[x][y].setAlive(false);
-				;
+				repaint();
 			}
 	}
 
@@ -189,20 +168,16 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 
 	private void changeCell(int val) {
 		String tool = Controls.tools.getTool();
-		if (tool.equals("draw")) {
-			for (int y = 0; y < PaintBrushEditor.SIZE; y++)
-				for (int x = 0; x < PaintBrushEditor.SIZE; x++) {
-					int x1 = i + x - halfPt;
-					int y1 = j + y - halfPt;
-					if (paintbrush[y][x] == 1) {
-						if (leftClick)
-							addCell(x1, y1);
-						else
-							removeCell(x1, y1);
+		System.out.println(tool);
+		if (tool.equalsIgnoreCase("draw")) {
+			int x1 = ij.y - halfPt;
+			int y1 = ij.x - halfPt;
+			if (leftClick)
+				addCell(x1, y1);
+			else
+				removeCell(x1, y1);
 
-					}
-				}
-		} else if (tool.equals("paste")) {
+		} else if (tool.equalsIgnoreCase("paste")) {
 			if (stamp == null)
 				return;
 			int halfw = 0, halfh = 0;
@@ -222,13 +197,13 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 			}
 		}
 		ConwayGUI.game.updateStats();
+		repaint();
 	}
 
 	private Point getPointOnScreen(MouseEvent e) {
-		int x = (int) (Math.round((double) e.getPoint().getX()
-				/ Settings.CELL_SIZE));
-		int y = (int) (Math.round((double) e.getPoint().getY()
-				/ Settings.CELL_SIZE));
+
+		int x = (int) (Math.round((double) e.getSceneX() / Settings.CELL_SIZE));
+		int y = (int) (Math.round((double) e.getSceneY() / Settings.CELL_SIZE));
 		x *= Settings.CELL_SIZE;
 		y *= Settings.CELL_SIZE;
 		if (x > ConwayGUI.game.getPreferredSize().width)
@@ -255,10 +230,17 @@ public class ConwaysBoardMouseListeners extends MouseAdapter {
 	}
 
 	private Point getCell(Point p) {
-		int x = p.x / Settings.CELL_SIZE;
-		int y = p.y / Settings.CELL_SIZE;
-
+		int x = (p.x) / Settings.CELL_SIZE;
+		int y = (p.y - ConwayGUI.getPos()) / Settings.CELL_SIZE;
 		return new Point(x, y);
+	}
+
+	public Point getCell(double x, double y) {
+		return getCell(new Point((int) x, (int) y));
+	}
+
+	private void repaint() {
+		ConwayGUI.game.drawCells();
 	}
 
 }

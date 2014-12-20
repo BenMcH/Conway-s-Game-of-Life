@@ -86,7 +86,6 @@ public class ColorPanel extends JPanel implements ActionListener {
 		gr.changeColor(Settings.GRID_COLOR);
 		cl.changeColor(Settings.CELL_COLOR);
 
-		ConwayGUI.game.repaint();
 	}
 
 	private class SquareComp extends JPanel {

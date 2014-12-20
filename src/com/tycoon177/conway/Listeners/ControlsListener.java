@@ -1,51 +1,46 @@
 package com.tycoon177.conway.listeners;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
+import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 
-public class ControlsListener implements ActionListener {
-	private Controls controls;
-	private Timer timer;
+public class ControlsListener extends AnimationTimer implements
+		EventHandler<ActionEvent> {
+	private boolean running = false;
+	private long delay = 1000 / 20, lastUpdate = System.currentTimeMillis();
 
 	public ControlsListener(Controls c) {
-		this.controls = c;
-		timer = new Timer(1000 / 20, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ConwayGUI.game.step();
-				ConwayGUI.game.repaint();
-			}
-		});
 	}
 
 	@SuppressWarnings("unused")
 	private ControlsListener() {
 	}
 
+	public void setMaxUpdates(int updates) {
+
+		delay = (1000 / updates);
+
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		switch (event.getActionCommand()) {
+	public void handle(ActionEvent arg0) {
+		Button b = (Button) arg0.getSource();
+		switch (b.getText().toLowerCase()) {
 		case "step":
 			ConwayGUI.game.step();
-			controls.repaint();
-			controls.revalidate();
+			// controls.revalidate();
 			break;
-		case "run":
-			if (timer.isRunning()) {
-				timer.stop();
-				ConwayGUI.gui
-						.setTitle("Conways Game of Life, made by tycoon177 - Stopped");
-				Controls.slider.setFPSDisabled(true);
+		case "toggle run":
+			if (isRunning()) {
+				stop();
+				running = false;
 			} else {
-				timer.start();
-				ConwayGUI.gui
-						.setTitle("Conways Game of Life, made by tycoon177 - Running");
-				Controls.slider.setFPSDisabled(false);
+				start();
+				running = true;
 			}
 			break;
 		case "clear":
@@ -54,22 +49,19 @@ public class ControlsListener implements ActionListener {
 			break;
 		case "random":
 			ConwayGUI.game.randomizeBoard();
-			ConwayGUI.game.repaint();
+			// ConwayGUI.game.repaint();
 		}
 	}
 
-	public void setMaxUpdates(int updates) {
-
-		timer.setDelay(1000 / updates);
-
-	}
-	
-	public void runTimer(boolean run){
-		if(timer.isRunning()){
-			if(!run) timer.stop();
-		}else
-			if(run) timer.start();
-		
+	private boolean isRunning() {
+		return running;
 	}
 
+	@Override
+	public void handle(long arg0) {
+		if (System.currentTimeMillis() - lastUpdate > delay) {
+			ConwayGUI.game.step();
+			lastUpdate = System.currentTimeMillis();
+		}
+	}
 }

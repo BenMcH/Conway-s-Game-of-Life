@@ -1,56 +1,39 @@
 package com.tycoon177.conway.GUI.controlpanels;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import com.tycoon177.conway.GUI.ConwayGUI;
+import com.tycoon177.conway.utils.Dialog;
 
-public class GenerationSkip extends JPanel {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4279175558720524893L;
+public class GenerationSkip extends VBox {
 
 	public GenerationSkip() {
-		super(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1;
-		c.weighty = 1;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		final JTextField f = new JTextField("0");
-		JButton b = new JButton("Skip");
-		b.addActionListener(new ActionListener() {
-
+		super();
+		this.setAlignment(Pos.TOP_CENTER);
+		TextField f = new TextField("0");
+		Button b = new Button("Skip");
+		b.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void handle(ActionEvent arg0) {
 				try {
 					ConwayGUI.game.skipToGeneration(Integer.parseInt(f
 							.getText()));
 				} catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(null,
-							"Please Enter a Whole Number!", "Error",
-							JOptionPane.ERROR_MESSAGE);
+					Dialog.showDialog("Please Enter a Whole Number!", "Error");
 				}
 			}
 		});
-		add(new JLabel("Desired Generation:"),c);
-		c.gridy = 1;
-		add(f,c);
-		c.gridy = 2;
-		add(b,c);
-		setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Generation Skip"));
+		getChildren().add(new Text("Desired Generation:"));
+		getChildren().add(f);
+		getChildren().add(b);
+		//setBorder(new TitledBorder(new LineBorder(Color.BLACK),
+			//	"Generation Skip"));
 	}
 }

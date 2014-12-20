@@ -5,33 +5,30 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JComponent;
+import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
+
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.listeners.ConwaysBoardMouseListeners;
+import com.tycoon177.conway.utils.Dialog;
 import com.tycoon177.conway.utils.Settings;
 
-public class ConwaysGame extends JComponent {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7548436324523302187L;
+public class ConwaysGame extends Canvas {
 	public volatile Cell[][] board;
 	public byte[][] stamp;
 	private boolean showGrid = true;
 	private int generation = 0;
 	private Rectangle selectionRect;
 	private long numberDead = 0;
-
+	private double position;
 	@SuppressWarnings("serial")
 	private ArrayList<Integer> stayAlive = new ArrayList<Integer>() {
 		{
@@ -47,6 +44,7 @@ public class ConwaysGame extends JComponent {
 	};
 
 	public ConwaysGame() {
+		super(10, 10);
 		firstSetup();
 		board = new Cell[10][10];
 		randomizeBoard();
@@ -54,42 +52,65 @@ public class ConwaysGame extends JComponent {
 	}
 
 	public ConwaysGame(Cell[][] b) {
+		super(b.length, b[0].length);
 		firstSetup();
 		board = b;
 		init();
 	}
 
 	public ConwaysGame(int size) {
+		super(size, size);
 		firstSetup();
 		board = new Cell[size][size];
 		init();
 	}
 
 	public ConwaysGame(int width, int height) {
+		super(width, height);
 		firstSetup();
 		board = new Cell[width][height];
 		init();
 	}
-	
-	private void firstSetup(){
+
+	private void firstSetup() {
+		this.setWidth(this.getWidth() * Settings.CELL_SIZE);
+		this.setHeight(this.getHeight() * Settings.CELL_SIZE);
+
 		ConwaysBoardMouseListeners listen = new ConwaysBoardMouseListeners();
-		this.addMouseMotionListener(listen);
-		this.addMouseListener(listen);
-		this.setDoubleBuffered(true);
-		this.setFocusable(true);
-		this.addFocusListener(new FocusListener() {
-			
+
+		this.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
-			public void focusGained(FocusEvent arg0) {
-				
+			public void handle(MouseEvent arg0) {
+				listen.mousePressed(arg0);
 			}
-			
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				requestFocus();
-			}
-			
 		});
+		this.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				listen.mouseDragged(arg0);
+			}
+		});
+		this.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				listen.mouseReleased(arg0);
+			}
+		});
+
+		/*
+		 * this.addMouseMotionListener(listen); this.addMouseListener(listen);
+		 * this.setDoubleBuffered(true); this.setFocusable(true);
+		 * this.addFocusListener(new FocusListener() {
+		 * 
+		 * @Override public void focusGained(FocusEvent arg0) {
+		 * 
+		 * }
+		 * 
+		 * @Override public void focusLost(FocusEvent arg0) { requestFocus(); }
+		 * 
+		 * });
+		 */
 
 	}
 
@@ -99,8 +120,7 @@ public class ConwaysGame extends JComponent {
 		numberDead = 0;
 		Settings.GRID_HEIGHT = board.length;
 		Settings.GRID_WIDTH = board[0].length;
-		this.removeAll();
-		this.setLayout(new GridBagLayout());
+		// this.getChildren().removeAll();
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.BOTH;
@@ -111,27 +131,22 @@ public class ConwaysGame extends JComponent {
 			c.weighty = .01;
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Cell();
-				add(board[i][j], c);
+				// add(board[i][j], i, j);
 				c.gridy++;
 			}
 		}
+		// this.setSkin(new GameSkin(this));
 		c.weightx = Integer.MAX_VALUE;
 		c.weighty = Integer.MAX_VALUE;
 		c.gridy++;
 		c.gridx++;
-		add(new JPanel(), c);
 		System.out.println("Done with init");
 	}
-	
-	public void reinit(int width, int height){
-		Controls.listen.runTimer(false);
-		System.out.println("Tim");
-		
+
+	public void reinit(int width, int height) {
+		Controls.listen.stop();
 		board = new Cell[width][height];
-		System.out.println("Tim");
 		init();
-		System.out.println("Tim");
-		//repaint();
 	}
 
 	public void randomizeBoard() {
@@ -148,7 +163,7 @@ public class ConwaysGame extends JComponent {
 		generation = 0;
 		numberDead = 0;
 		updateStats();
-
+		drawCells();
 	}
 
 	public int getNeighbors(int i, int j) {
@@ -230,15 +245,15 @@ public class ConwaysGame extends JComponent {
 		}
 		generation++;
 		updateStats();
+		drawCells();
 	}
 
 	public Cell[][] getBoard() {
 		return board;
 	}
 
-	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		// super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		paintBackground(g2);
 		paintGrid(g2);
@@ -269,9 +284,9 @@ public class ConwaysGame extends JComponent {
 
 	public void clearBoard() {
 		init();
-		repaint();
 		generation = 0;
 		updateStats();
+		drawCells();
 	}
 
 	public void setStayAlive(int... num) {
@@ -330,10 +345,8 @@ public class ConwaysGame extends JComponent {
 
 	public void changeCellSize(int size) {
 		Settings.CELL_SIZE = size;
-		repaint();
 	}
 
-	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(board.length * Settings.CELL_SIZE, board[0].length
 				* Settings.CELL_SIZE);
@@ -375,15 +388,12 @@ public class ConwaysGame extends JComponent {
 
 	public void skipToGeneration(int generation) {
 		if (this.generation >= generation)
-			JOptionPane
-					.showMessageDialog(
-							null,
-							"The current generation has already reached this generation",
-							"Generation", JOptionPane.PLAIN_MESSAGE);
+			Dialog.showDialog(
+					"The current generation has already reached this generation",
+					"Generation");
 		while (this.generation < generation) {
 			step();
 		}
-		repaint();
 	}
 
 	public long getDead() {
@@ -394,6 +404,36 @@ public class ConwaysGame extends JComponent {
 		this.board = null;
 		this.selectionRect = null;
 		this.stamp = null;
+	}
+
+	public void drawCells() {
+		double round = 2.3;
+		GraphicsContext g = getGraphicsContext2D();
+		g.clearRect(0, 0, getWidth(), getHeight());
+		int width = Settings.CELL_SIZE * Settings.GRID_WIDTH / 2;
+		int x = (int) (getWidth() / 2) - width;
+		x *= width;
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				g.setLineWidth(.5);
+				g.strokeRoundRect(x + Settings.CELL_SIZE * j, Settings.CELL_SIZE
+						* i, Settings.CELL_SIZE, Settings.CELL_SIZE, round,
+						round);
+				if (board[i][j].isAlive()) {
+					g.fillRoundRect(x + Settings.CELL_SIZE * j, Settings.CELL_SIZE
+							* i, Settings.CELL_SIZE, Settings.CELL_SIZE, round,
+							round);
+				}
+			}
+		}
+	}
+
+	public void setPos(double height) {
+		position = height;
+	}
+
+	public double getPos() {
+		return position;
 	}
 
 }

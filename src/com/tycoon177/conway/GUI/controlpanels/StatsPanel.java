@@ -1,47 +1,39 @@
 package com.tycoon177.conway.GUI.controlpanels;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
-public class StatsPanel extends JPanel {
+public class StatsPanel extends GridPane {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4687534417519357346L;
-	private JLabel generation, cellsAlive, cellsDead;
+	private Text generation, cellsAlive, cellsDead;
 
 	public StatsPanel() {
-		super(new GridBagLayout());
+		super();
 		GridBagConstraints c = new GridBagConstraints();
-		generation = new JLabel("0");
-		cellsAlive = new JLabel("0");
-		cellsDead = new JLabel("0");
+		generation = new Text("0");
+		cellsAlive = new Text("0");
+		cellsDead = new Text("0");
 		c.weightx = 1;
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JLabel("Generation: "), c);
+		add(new Text("Generation: "), 0, 0);
 		c.gridx = 1;
-		add(generation, c);
+		add(generation, 1, 0);
 		c.gridy = 1;
 		c.gridx = 0;
-		add(new JLabel("Alive Cells: "), c);
+		add(new Text("Alive Cells: "), 0, 1);
 		c.gridx = 1;
-		add(cellsAlive, c);
+		add(cellsAlive, 1, 1);
 		c.gridy = 2;
 		c.gridx = 0;
-		add(new JLabel("Dead Cells: "), c);
+		add(new Text("Dead Cells: "), 0, 2);
 		c.gridx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		add(cellsDead, c);
-		setBorder(new TitledBorder(new LineBorder(Color.black), "Stats"));
+		add(cellsDead, 1, 2);
+		// setBorder(new TitledBorder(new LineBorder(Color.black), "Stats"));
 
 	}
 

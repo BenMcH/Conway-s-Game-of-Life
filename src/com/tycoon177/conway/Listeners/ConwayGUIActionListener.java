@@ -76,7 +76,7 @@ public class ConwayGUIActionListener implements ActionListener {
 			Color c = JColorChooser.showDialog(null, "Choose a color",
 					Settings.CELL_COLOR);
 			Settings.CELL_COLOR = c;
-			ConwayGUI.game.repaint();
+			//ConwayGUI.game.repaint();
 			break;
 		case ("pref"):
 			PreferencesWindow win = new PreferencesWindow();

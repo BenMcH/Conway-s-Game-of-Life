@@ -27,13 +27,7 @@ public class Sliders extends VBox implements ChangeListener {
 					public void changed(ObservableValue<? extends Number> arg0,
 							Number old, Number newVal) {
 						// TODO Auto-generated method stub
-						Settings.CELL_SIZE = (int) Math.round(newVal
-								.doubleValue());
-						// ConwayGUI.game.revalidate();
-						// ConwayGUI.game.repaint();
-						ConwayGUI.game.setWidth(Settings.GRID_WIDTH
-								* Settings.CELL_SIZE);
-						ConwayGUI.game.setHeight(Settings.GRID_HEIGHT * Settings.CELL_SIZE);
+						Settings.CELL_SIZE = (int) Math.round(newVal.doubleValue());
 						ConwayGUI.game.drawCells();
 					}
 				});

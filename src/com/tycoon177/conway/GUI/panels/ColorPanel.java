@@ -12,7 +12,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import com.tycoon177.conway.GUI.ConwayGUI;
 import com.tycoon177.conway.utils.Settings;
 
 public class ColorPanel extends JPanel implements ActionListener {

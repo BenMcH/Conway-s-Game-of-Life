@@ -407,6 +407,9 @@ public class ConwaysGame extends Canvas {
 	}
 
 	public void drawCells() {
+		ConwayGUI.game.setWidth(Settings.GRID_WIDTH * Settings.CELL_SIZE);
+		ConwayGUI.game.setHeight(Settings.GRID_HEIGHT * Settings.CELL_SIZE);
+
 		double round = 2.3;
 		GraphicsContext g = getGraphicsContext2D();
 		g.clearRect(0, 0, getWidth(), getHeight());
@@ -416,13 +419,13 @@ public class ConwaysGame extends Canvas {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				g.setLineWidth(.5);
-				g.strokeRoundRect(x + Settings.CELL_SIZE * j, Settings.CELL_SIZE
-						* i, Settings.CELL_SIZE, Settings.CELL_SIZE, round,
-						round);
+				g.strokeRoundRect(x + Settings.CELL_SIZE * j,
+						Settings.CELL_SIZE * i, Settings.CELL_SIZE,
+						Settings.CELL_SIZE, round, round);
 				if (board[i][j].isAlive()) {
-					g.fillRoundRect(x + Settings.CELL_SIZE * j, Settings.CELL_SIZE
-							* i, Settings.CELL_SIZE, Settings.CELL_SIZE, round,
-							round);
+					g.fillRoundRect(x + Settings.CELL_SIZE * j,
+							Settings.CELL_SIZE * i, Settings.CELL_SIZE,
+							Settings.CELL_SIZE, round, round);
 				}
 			}
 		}

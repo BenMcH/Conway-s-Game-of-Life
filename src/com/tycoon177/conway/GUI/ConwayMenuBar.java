@@ -1,31 +1,33 @@
 package com.tycoon177.conway.GUI;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 
 import com.tycoon177.conway.listeners.ConwayGUIActionListener;
 
-public class ConwayMenuBar extends JMenuBar {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3460583898347916149L;
+public class ConwayMenuBar extends MenuBar {
 
 	public ConwayMenuBar() {
 		super();
-		JMenu edit = new JMenu("Edit");
+		Menu edit = new Menu("Edit");
 		ConwayGUIActionListener actionListener = new ConwayGUIActionListener();
-		add(edit);
-		JMenuItem changeSize = new JMenuItem("Change Board Size");
-		changeSize.setActionCommand("ChangeSize");
-		changeSize.addActionListener(actionListener);
-		edit.add(changeSize);
-		JMenuItem preferences = new JMenuItem("Preferences");
-		preferences.setActionCommand("pref");
-		preferences.addActionListener(actionListener);
-		edit.add(preferences);
+		// add(edit);
+		MenuItem changeSize = new MenuItem("Change Board Size");
+		changeSize.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				GridSizeChanger.showGridSizeChanger();
+			}
+		});
+		// edit.add(changeSize);
+		MenuItem preferences = new MenuItem("Preferences");
+		preferences.setOnAction(actionListener);
+		// edit.add(preferences);
+		edit.getItems().addAll(changeSize, preferences);
+		this.getMenus().add(edit);
 	}
 
 }

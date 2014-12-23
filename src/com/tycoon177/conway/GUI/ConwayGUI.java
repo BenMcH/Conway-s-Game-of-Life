@@ -4,31 +4,36 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.swing.JScrollPane;
 
 import com.tycoon177.conway.GUI.controlpanels.Controls;
-import com.tycoon177.conway.GUI.controlpanels.PaintBrushEditor;
+import com.tycoon177.conway.utils.Settings;
 
 public class ConwayGUI extends Application {
 	public static ConwayGUI gui;
 	public static ConwaysGame game;
 	public static Controls controls;
 	JScrollPane pane;
-
+	static ConwayMenuBar menuBar;
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	public void setNewBoard(int width, int height) {
-		game.reinit(width, height);
-		//game.repaint();
+		game.reinit(height, width);
+		Settings.CELL_SIZE++;
+		Settings.CELL_SIZE--;
+		game.drawCells();
+		// game.repaint();
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		new PaintBrushEditor();
+		gui = new ConwayGUI();
+		menuBar = new ConwayMenuBar();
 		controls = new Controls();
 		game = new ConwaysGame(100);
 		BorderPane root = new BorderPane();
@@ -37,16 +42,16 @@ public class ConwayGUI extends Application {
 		ScrollPane gamePane = new ScrollPane(game);
 		root.setTop(controls);
 		root.setCenter(gamePane);
-		Scene scene = new Scene(root);
-		
+		VBox box = new VBox();
+		box.getChildren().addAll(menuBar, root);
+		Scene scene = new Scene(box);
+
 		stage.setScene(scene);
 		stage.show();
-		
+
 	}
 
 	public static int getPos() {
-		return (int)controls.getHeight();
+		return (int) (controls.getHeight() + menuBar.getHeight());
 	}
-	
-
 }

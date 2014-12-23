@@ -20,8 +20,8 @@ public class ConwaysBoardMouseListeners {
 	public void mouseDragged(MouseEvent e) {
 		System.out.println("Dragged");
 		if (inside) {
-			ij = getCell(e.getSceneX(), e.getSceneY());
-			cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
+			ij = getCell(e.getX(), e.getY());
+			cell = getCell(new Point((int) e.getX(), (int) e.getY()));
 			changeCell(leftClick ? 1 : 0);
 			if (Controls.tools.getTool().equalsIgnoreCase("select"))
 				if (this.point == null)
@@ -39,7 +39,7 @@ public class ConwaysBoardMouseListeners {
 	public void mouseMoved(MouseEvent e) {
 		if (inside) {
 			point = getPointOnScreen(e);
-			cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
+			cell = getCell(new Point((int) e.getX(), (int) e.getY()));
 			setStamp();
 			// ConwayGUI.game.repaint();
 		}
@@ -80,8 +80,8 @@ public class ConwaysBoardMouseListeners {
 	public void mousePressed(MouseEvent e) {
 		System.out.println("Pressed");
 		leftClick = e.getButton() == MouseButton.PRIMARY;
-		ij = getCell(e.getSceneX(), e.getSceneY());
-		cell = getCell(new Point((int) e.getSceneX(), (int) e.getSceneY()));
+		ij = getCell(e.getX(), e.getY());
+		cell = getCell(new Point((int) e.getX(), (int) e.getY()));
 		changeCell(leftClick ? 1 : 0);
 		// ConwayGUI.gui.repaint();
 		// String tool = Controls.tools.getTool();
@@ -201,9 +201,9 @@ public class ConwaysBoardMouseListeners {
 	}
 
 	private Point getPointOnScreen(MouseEvent e) {
-
-		int x = (int) (Math.round((double) e.getSceneX() / Settings.CELL_SIZE));
-		int y = (int) (Math.round((double) e.getSceneY() / Settings.CELL_SIZE));
+		
+		int x = (int) (Math.round((double) e.getX() / Settings.CELL_SIZE));
+		int y = (int) (Math.round((double) e.getY() / Settings.CELL_SIZE));
 		x *= Settings.CELL_SIZE;
 		y *= Settings.CELL_SIZE;
 		if (x > ConwayGUI.game.getPreferredSize().width)
@@ -231,7 +231,7 @@ public class ConwaysBoardMouseListeners {
 
 	private Point getCell(Point p) {
 		int x = (p.x) / Settings.CELL_SIZE;
-		int y = (p.y - ConwayGUI.getPos()) / Settings.CELL_SIZE;
+		int y = (p.y) / Settings.CELL_SIZE;
 		return new Point(x, y);
 	}
 

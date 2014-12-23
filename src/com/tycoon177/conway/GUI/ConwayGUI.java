@@ -18,6 +18,7 @@ public class ConwayGUI extends Application {
 	public static Controls controls;
 	JScrollPane pane;
 	static ConwayMenuBar menuBar;
+	static ScrollPane gamePane;
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -38,8 +39,8 @@ public class ConwayGUI extends Application {
 		game = new ConwaysGame(100);
 		BorderPane root = new BorderPane();
 		game.drawCells();
-		game.setPos(controls.getHeight());
-		ScrollPane gamePane = new ScrollPane(game);
+		gamePane = new ScrollPane(game);
+		//game.setPos(controls.getHeight());
 		root.setTop(controls);
 		root.setCenter(gamePane);
 		VBox box = new VBox();
@@ -49,9 +50,5 @@ public class ConwayGUI extends Application {
 		stage.setScene(scene);
 		stage.show();
 
-	}
-
-	public static int getPos() {
-		return (int) (controls.getHeight() + menuBar.getHeight());
 	}
 }

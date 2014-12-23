@@ -18,7 +18,6 @@ public class ConwaysBoardMouseListeners {
 	private int[][] stamp;
 
 	public void mouseDragged(MouseEvent e) {
-		System.out.println("Dragged");
 		if (inside) {
 			ij = getCell(e.getX(), e.getY());
 			cell = getCell(new Point((int) e.getX(), (int) e.getY()));
@@ -74,11 +73,9 @@ public class ConwaysBoardMouseListeners {
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("Clicked");
 	}
 
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Pressed");
 		leftClick = e.getButton() == MouseButton.PRIMARY;
 		ij = getCell(e.getX(), e.getY());
 		cell = getCell(new Point((int) e.getX(), (int) e.getY()));
@@ -90,7 +87,6 @@ public class ConwaysBoardMouseListeners {
 	}
 
 	public void mouseReleased(MouseEvent arg0) {
-		System.out.println("Released");
 		if (inside) {
 			// ConwayGUI.game.repaint();
 			if (Controls.tools.getTool().equalsIgnoreCase("select")) {
@@ -168,7 +164,6 @@ public class ConwaysBoardMouseListeners {
 
 	private void changeCell(int val) {
 		String tool = Controls.tools.getTool();
-		System.out.println(tool);
 		if (tool.equalsIgnoreCase("draw")) {
 			int x1 = ij.y - halfPt;
 			int y1 = ij.x - halfPt;

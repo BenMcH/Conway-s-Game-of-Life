@@ -56,6 +56,10 @@ public class ControlsListener extends AnimationTimer implements
 	private boolean isRunning() {
 		return running;
 	}
+	
+	public void setRunning(boolean r){
+		running = r;
+	}
 
 	@Override
 	public void handle(long arg0) {

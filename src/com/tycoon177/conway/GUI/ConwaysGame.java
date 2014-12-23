@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,10 +13,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 
-import javax.swing.JOptionPane;
+
 
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.listeners.ConwaysBoardMouseListeners;
+import com.tycoon177.conway.utils.ColorConverter;
 import com.tycoon177.conway.utils.Dialog;
 import com.tycoon177.conway.utils.Settings;
 
@@ -97,21 +97,6 @@ public class ConwaysGame extends Canvas {
 				listen.mouseReleased(arg0);
 			}
 		});
-
-		/*
-		 * this.addMouseMotionListener(listen); this.addMouseListener(listen);
-		 * this.setDoubleBuffered(true); this.setFocusable(true);
-		 * this.addFocusListener(new FocusListener() {
-		 * 
-		 * @Override public void focusGained(FocusEvent arg0) {
-		 * 
-		 * }
-		 * 
-		 * @Override public void focusLost(FocusEvent arg0) { requestFocus(); }
-		 * 
-		 * });
-		 */
-
 	}
 
 	public void init() {
@@ -121,32 +106,19 @@ public class ConwaysGame extends Canvas {
 		Settings.GRID_HEIGHT = board.length;
 		Settings.GRID_WIDTH = board[0].length;
 		// this.getChildren().removeAll();
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.BOTH;
 		for (int i = 0; i < board.length; i++) {
-			c.gridx++;
-			c.gridy = 0;
-			c.weightx = .01;
-			c.weighty = .01;
 			for (int j = 0; j < board[0].length; j++) {
 				board[i][j] = new Cell();
-				// add(board[i][j], i, j);
-				c.gridy++;
 			}
 		}
-		// this.setSkin(new GameSkin(this));
-		c.weightx = Integer.MAX_VALUE;
-		c.weighty = Integer.MAX_VALUE;
-		c.gridy++;
-		c.gridx++;
 		System.out.println("Done with init");
 	}
 
 	public void reinit(int width, int height) {
-		Controls.listen.stop();
 		board = new Cell[width][height];
 		init();
+		Controls.listen.stop();
+		Controls.listen.setRunning(false);
 	}
 
 	public void randomizeBoard() {
@@ -263,13 +235,13 @@ public class ConwaysGame extends Canvas {
 	}
 
 	private void paintBackground(Graphics2D g2) {
-		g2.setColor(Settings.BACKGROUND_COLOR);
+		g2.setColor(ColorConverter.fxToAwt(Settings.BACKGROUND_COLOR));
 		g2.fillRect(0, 0, this.getPreferredSize().width,
 				this.getPreferredSize().height);
 	}
 
 	private void paintGrid(Graphics2D g2) {
-		g2.setColor(Settings.GRID_COLOR);
+		g2.setColor(ColorConverter.fxToAwt(Settings.GRID_COLOR));
 		g2.setStroke(new BasicStroke());
 		if (showGrid) {
 			g2.drawRect(0, 0, board.length * Settings.CELL_SIZE,
@@ -320,9 +292,7 @@ public class ConwaysGame extends Canvas {
 				} else
 					stayNums[i] = Integer.parseInt(rules[i].trim());
 			} catch (NumberFormatException e) {
-				JOptionPane
-						.showMessageDialog(null,
-								"Error changing rules. Make sure to enter whole numbers separated by commas.");
+			Dialog.showDialog("Error changing rules. Make sure to enter whole numbers separated by commas.", "Rule Error!");
 				return;
 			}
 		}
@@ -333,9 +303,7 @@ public class ConwaysGame extends Canvas {
 				else
 					comeNums[i] = Integer.parseInt(comeRules[i]);
 			} catch (NumberFormatException e) {
-				JOptionPane
-						.showMessageDialog(null,
-								"Error changing rules. Make sure to enter whole numbers separated by commas.");
+				Dialog.showDialog("Error changing rules. Make sure to enter whole numbers separated by commas.", "Rule Error!");
 				return;
 			}
 		}
@@ -414,15 +382,20 @@ public class ConwaysGame extends Canvas {
 		GraphicsContext g = getGraphicsContext2D();
 		g.clearRect(0, 0, getWidth(), getHeight());
 		int width = Settings.CELL_SIZE * Settings.GRID_WIDTH / 2;
+		g.setFill(Settings.BACKGROUND_COLOR);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		int x = (int) (getWidth() / 2) - width;
 		x *= width;
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				g.setLineWidth(.5);
+				g.setLineWidth(.75);
+				g.setFill(Settings.GRID_COLOR);
+				g.setStroke(Settings.GRID_COLOR);
 				g.strokeRoundRect(x + Settings.CELL_SIZE * j,
 						Settings.CELL_SIZE * i, Settings.CELL_SIZE,
 						Settings.CELL_SIZE, round, round);
 				if (board[i][j].isAlive()) {
+					g.setFill(Settings.CELL_COLOR);
 					g.fillRoundRect(x + Settings.CELL_SIZE * j,
 							Settings.CELL_SIZE * i, Settings.CELL_SIZE,
 							Settings.CELL_SIZE, round, round);

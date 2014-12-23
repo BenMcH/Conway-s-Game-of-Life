@@ -7,8 +7,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.JScrollPane;
-
 import com.tycoon177.conway.GUI.controlpanels.Controls;
 import com.tycoon177.conway.utils.Settings;
 
@@ -16,7 +14,6 @@ public class ConwayGUI extends Application {
 	public static ConwayGUI gui;
 	public static ConwaysGame game;
 	public static Controls controls;
-	JScrollPane pane;
 	static ConwayMenuBar menuBar;
 	static ScrollPane gamePane;
 	public static void main(String[] args) {

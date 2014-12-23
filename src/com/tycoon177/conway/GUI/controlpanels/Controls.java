@@ -4,13 +4,11 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-import javax.swing.Timer;
 
 import com.tycoon177.conway.listeners.ControlsListener;
 
 public class Controls extends HBox {
 
-	Timer timer;
 	protected int x;
 	protected int y;
 	public static ControlsListener listen;

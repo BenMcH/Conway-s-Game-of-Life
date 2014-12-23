@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import com.tycoon177.conway.GUI.panels.AttributesPreferences;
+import com.tycoon177.conway.GUI.panels.ColorPanel;
 
 public class PreferencesWindow extends Stage {
 
@@ -36,18 +37,16 @@ public class PreferencesWindow extends Stage {
 	private static void instantiateMenus() {
 		menus = new HashMap<String, Pane>();
 		menus.put("Attributes", new AttributesPreferences());
-
-		// menus.put("Performance", new PerformancePanel());
-		// menus.put("Colors", new ColorPanel());
+		 menus.put("Colors", new ColorPanel());
 	}
 
 	public static VBox getOptionsMenu() {
 		VBox pane = new VBox();
 		ObservableList<String> model = FXCollections.observableArrayList();
 		model.add("Attributes");
-		model.add("Performance");
+		//model.add("Performance");
 		model.add("Colors");
-		options = new ListView<String>();
+		options = new ListView<String>(model);
 		options.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener<String>() {
 
@@ -81,10 +80,10 @@ public class PreferencesWindow extends Stage {
 		// repaint();
 		p.setCenter(menu);
 	}
-	
-	public static void showPreferences(){
+
+	public static void showPreferences() {
 		Stage s = new Stage();
-		
+
 		p = new BorderPane();
 		instantiateMenus();
 		p.setLeft(getOptionsMenu());

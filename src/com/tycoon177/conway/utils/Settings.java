@@ -1,11 +1,12 @@
 package com.tycoon177.conway.utils;
 
-import java.awt.Color;
 import java.io.Externalizable;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import javafx.scene.paint.Color;
 
 public class Settings implements Externalizable {
 	/**
@@ -16,7 +17,7 @@ public class Settings implements Externalizable {
 	public static int GRID_WIDTH = 100;
 	public static int CELL_SIZE = 8;
 	public static Color BACKGROUND_COLOR = Color.WHITE;
-	public static Color GRID_COLOR = Color.LIGHT_GRAY;
+	public static Color GRID_COLOR = Color.LIGHTGREY;
 	public static Color CELL_COLOR = Color.BLACK;
 	public static File settingsFile = new File(System.getProperty("user.home")
 			+ File.separator + "conway" + File.separator + "settings.dat");
